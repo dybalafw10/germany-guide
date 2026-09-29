@@ -17,7 +17,19 @@
       "info",
       "sos"
     ],
-    "tbdHelp": "확인되지 않은 값은 {\"value\": 값 또는 null, \"tbd\": true, \"note\": 확인할 내용} 형식. 확인되면 문자열로 바꾸면 됨. 목록은 python tools/tbd_report.py"
+    "tbdHelp": "확인되지 않은 값은 {\"value\": 값 또는 null, \"tbd\": true, \"note\": 확인할 내용} 형식. 확인되면 문자열로 바꾸면 됨. 목록은 python tools/tbd_report.py",
+    "clocks": [
+      {
+        "label": "독일",
+        "sub": "현지",
+        "tz": "Europe/Berlin"
+      },
+      {
+        "label": "한국",
+        "sub": "서울",
+        "tz": "Asia/Seoul"
+      }
+    ]
   },
   "home": {
     "purpose": {
@@ -84,17 +96,7 @@
     }
   },
   "schedule": {
-    "routeImage": {
-      "src": "img/route.webp",
-      "alt": "브레멘(아힘)에서 카셀, 뉘른베르크를 거쳐 뮌헨까지 이어지는 숙소 이동동선 지도",
-      "ready": true,
-      "credit": "이동동선 인포그래픽 (KPC 제작)",
-      "license": null,
-      "sourceUrl": null,
-      "width": 1400,
-      "height": 982
-    },
-    "routeNote": "총 이동거리 약 770km(숙소 기준). 거리·소요시간은 고속도로 기준 개략치이며 교통상황에 따라 달라질 수 있음. ※ 지도 속 아힘 호텔 주소(Undeloher Str.)는 오기 — 공식 주소는 Zum Klümoor 7",
+    "routeNote": "총 이동거리 약 770km(숙소 기준). 거리·소요시간은 고속도로 기준 개략치이며 교통상황에 따라 달라질 수 있음.",
     "days": [
       {
         "day": 1,
@@ -109,12 +111,14 @@
               "note": "인천공항 집결 시각"
             },
             "title": "인천국제공항 집결",
-            "desc": "루프트한자 카운터"
+            "desc": "루프트한자 카운터",
+            "tz": "Asia/Seoul"
           },
           {
             "time": "13:30",
             "title": "LH719 인천 출발",
-            "desc": "비행시간 약 13시간"
+            "desc": "비행시간 약 13시간",
+            "tz": "Asia/Seoul"
           },
           {
             "time": "18:35",
@@ -312,13 +316,206 @@
               "note": "웹 스케줄상 11:15 — e-티켓 대조"
             },
             "title": "인천국제공항 도착",
-            "desc": "세관 신고 후 해산"
+            "desc": "세관 신고 후 해산",
+            "tz": "Asia/Seoul"
           }
         ],
         "stay": "—",
         "meals": "기내식"
       }
-    ]
+    ],
+    "map": {
+      "note": "도시 사이를 직선으로 단순화한 개략도입니다 (실제 도로와 다름).",
+      "refs": [
+        {
+          "name": "함부르크",
+          "lat": 53.5511,
+          "lng": 9.9937
+        },
+        {
+          "name": "베를린",
+          "lat": 52.52,
+          "lng": 13.405
+        },
+        {
+          "name": "프랑크푸르트",
+          "lat": 50.1109,
+          "lng": 8.6821
+        },
+        {
+          "name": "슈투트가르트",
+          "lat": 48.7758,
+          "lng": 9.1829
+        }
+      ],
+      "stops": {
+        "icn": {
+          "name": "인천",
+          "xy": [
+            636,
+            640
+          ]
+        },
+        "muc": {
+          "name": "뮌헨공항",
+          "lat": 48.3538,
+          "lng": 11.7861
+        },
+        "bre": {
+          "name": "브레멘공항",
+          "lat": 53.0475,
+          "lng": 8.7867
+        },
+        "achim": {
+          "name": "아힘(숙소)",
+          "lat": 53.0338169,
+          "lng": 8.9603125,
+          "pin": 1
+        },
+        "unib": {
+          "name": "브레멘 기관 방문",
+          "lat": 53.10861,
+          "lng": 8.85361
+        },
+        "messe": {
+          "name": "메세 브레멘",
+          "lat": 53.0793,
+          "lng": 8.8017
+        },
+        "kassel": {
+          "name": "카셀(숙소)",
+          "lat": 51.3079038,
+          "lng": 9.5487413,
+          "pin": 2
+        },
+        "giessen": {
+          "name": "기센",
+          "lat": 50.58056,
+          "lng": 8.67694
+        },
+        "wuerzburg": {
+          "name": "뷔르츠부르크",
+          "lat": 49.7913,
+          "lng": 9.9534
+        },
+        "nuernberg": {
+          "name": "뉘른베르크(숙소)",
+          "lat": 49.4288494,
+          "lng": 11.0195028,
+          "pin": 3
+        },
+        "muenchen": {
+          "name": "뮌헨(숙소)",
+          "lat": 48.1023059,
+          "lng": 11.5297462,
+          "pin": 4
+        },
+        "bmw": {
+          "name": "BMW Welt",
+          "lat": 48.17694,
+          "lng": 11.55667
+        }
+      },
+      "legs": [
+        {
+          "day": 1,
+          "from": "icn",
+          "to": "muc",
+          "mode": "air",
+          "label": "LH719 인천→뮌헨"
+        },
+        {
+          "day": 1,
+          "from": "muc",
+          "to": "bre",
+          "mode": "air",
+          "label": "LH2118 뮌헨→브레멘"
+        },
+        {
+          "day": 1,
+          "from": "bre",
+          "to": "achim",
+          "mode": "road"
+        },
+        {
+          "day": 2,
+          "from": "achim",
+          "to": "unib",
+          "mode": "road"
+        },
+        {
+          "day": 2,
+          "from": "unib",
+          "to": "achim",
+          "mode": "road"
+        },
+        {
+          "day": 3,
+          "from": "achim",
+          "to": "messe",
+          "mode": "road"
+        },
+        {
+          "day": 3,
+          "from": "messe",
+          "to": "kassel",
+          "mode": "road",
+          "label": "약 310km"
+        },
+        {
+          "day": 4,
+          "from": "kassel",
+          "to": "giessen",
+          "mode": "road",
+          "label": "약 120km"
+        },
+        {
+          "day": 4,
+          "from": "giessen",
+          "to": "wuerzburg",
+          "mode": "road",
+          "label": "약 200km"
+        },
+        {
+          "day": 4,
+          "from": "wuerzburg",
+          "to": "nuernberg",
+          "mode": "road",
+          "label": "약 110km"
+        },
+        {
+          "day": 5,
+          "from": "nuernberg",
+          "to": "muenchen",
+          "mode": "road",
+          "label": "약 170km"
+        },
+        {
+          "day": 6,
+          "from": "muenchen",
+          "to": "bmw",
+          "mode": "road"
+        },
+        {
+          "day": 6,
+          "from": "bmw",
+          "to": "muc",
+          "mode": "road"
+        },
+        {
+          "day": 6,
+          "from": "muc",
+          "to": "icn",
+          "mode": "air",
+          "label": "LH718 뮌헨→인천"
+        }
+      ],
+      "sources": [
+        "https://en.wikipedia.org/wiki/Munich_Airport",
+        "https://en.wikipedia.org/wiki/Bremen_Airport",
+        "https://en.wikipedia.org/wiki/W%C3%BCrzburg"
+      ]
+    }
   },
   "hotels": {
     "items": [
@@ -1566,6 +1763,42 @@
     ],
     "phrases": [
       {
+        "ko": "이 주소로 데려다 주세요",
+        "de": "Bitte bringen Sie mich zu dieser Adresse.",
+        "pron": "비테 브링엔 지 미히 추 디저 아드레세",
+        "essential": true
+      },
+      {
+        "ko": "길을 잃었어요. 도와주세요",
+        "de": "Ich habe mich verlaufen. Können Sie mir helfen?",
+        "pron": "이히 하베 미히 페어라우펜. 쾨넨 지 미어 헬펜?",
+        "essential": true
+      },
+      {
+        "ko": "경찰을 불러 주세요",
+        "de": "Bitte rufen Sie die Polizei.",
+        "pron": "비테 루펜 지 디 폴리차이",
+        "essential": true
+      },
+      {
+        "ko": "구급차를 불러 주세요",
+        "de": "Bitte rufen Sie einen Krankenwagen.",
+        "pron": "비테 루펜 지 아이넨 크랑켄바겐",
+        "essential": true
+      },
+      {
+        "ko": "의사가 필요해요",
+        "de": "Ich brauche einen Arzt.",
+        "pron": "이히 브라우헤 아이넨 아르츠트",
+        "essential": true
+      },
+      {
+        "ko": "화장실이 어디예요?",
+        "de": "Wo ist die Toilette?",
+        "pron": "보 이스트 디 토일레테?",
+        "essential": true
+      },
+      {
         "ko": "안녕하세요",
         "de": "Guten Tag",
         "pron": "구텐 탁"
@@ -1601,11 +1834,6 @@
         "pron": "디 레히눙, 비테"
       },
       {
-        "ko": "화장실이 어디예요?",
-        "de": "Wo ist die Toilette?",
-        "pron": "보 이스트 디 토일레테?"
-      },
-      {
         "ko": "얼마예요?",
         "de": "Was kostet das?",
         "pron": "바스 코스테트 다스?"
@@ -1619,13 +1847,14 @@
         "ko": "도와주세요!",
         "de": "Hilfe!",
         "pron": "힐페!"
-      },
-      {
-        "ko": "의사가 필요해요",
-        "de": "Ich brauche einen Arzt",
-        "pron": "이히 브라우헤 아이넨 아르츠트"
       }
-    ]
+    ],
+    "showCard": {
+      "hotelRequest": {
+        "de": "Bitte bringen Sie mich zu dieser Adresse:",
+        "ko": "이 주소로 데려다 주세요"
+      }
+    }
   },
   "sos": {
     "numbers": [

@@ -228,3 +228,100 @@ th { color: var(--text-2); font-weight: 700; white-space: nowrap; }
 .sources { font-size: .8rem; color: var(--text-2); margin-top: 8px; }
 .sources a { color: var(--text-2); word-break: break-all; }
 .footer-note { text-align: center; font-size: .85rem; color: var(--text-2); margin: 24px 0 8px; }
+
+/* 공지 */
+.notice-banner {
+  background: var(--brand); color: var(--brand-ink); border-radius: var(--radius);
+  padding: 14px 16px; margin: 0 0 12px; box-shadow: var(--shadow);
+}
+.notice-banner.urgent { background: var(--sos); }
+.notice-banner h3 { margin: 6px 0 2px; }
+.notice-banner small { color: inherit; opacity: .8; }
+.nb-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.nb-tag { background: #ffcf5a; color: #3b2a00; border-radius: 999px; padding: 1px 10px; font-size: .8rem; font-weight: 700; }
+.nb-ok { margin-top: 8px; background: #fff; color: var(--brand); border-color: #fff; }
+.notice-banner.urgent .nb-ok { color: var(--sos); }
+.notice-all summary { font-size: 1rem; }
+.notice-item { border-top: 1px solid var(--line); padding: 8px 0; }
+.notice-item:first-of-type { border-top: 0; }
+
+/* 보여주기 카드 (전체화면 큰 글씨) — 다크모드에서도 흰 바탕·검은 글씨로 대비 최대 */
+.btn-show { background: var(--accent); color: #1a1300; border-color: var(--accent); }
+.phrase {
+  display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: center; width: 100%;
+  text-align: left; padding: 12px 4px; min-height: 56px; cursor: pointer;
+  background: none; border: 0; border-top: 1px solid var(--line); color: var(--text); font: inherit;
+}
+.phrase:first-of-type { border-top: 0; }
+.phrase .ph-ko { grid-column: 1; font-size: .9rem; color: var(--text-2); }
+.phrase .ph-de { grid-column: 1; font-weight: 700; font-size: 1.1rem; }
+.phrase .ph-pron { grid-column: 1; font-size: .85rem; color: var(--text-2); }
+.phrase svg { grid-column: 2; grid-row: 1 / span 3; width: 22px; height: 22px; fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; }
+.showcard {
+  position: fixed; inset: 0; z-index: 100; background: #fff; color: #000;
+  display: flex; flex-direction: column;
+  padding: calc(env(safe-area-inset-top) + 56px) 20px calc(env(safe-area-inset-bottom) + 16px);
+}
+.showcard[hidden] { display: none; }
+.sc-body { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; justify-content: center; gap: .35em; line-height: 1.25; word-break: normal; overflow-wrap: break-word; }
+.sc-body p { margin: 0; }
+.sc-main { font-weight: 700; }
+.sc-lead { font-weight: 700; font-size: .55em; }
+.sc-addr { font-weight: 700; font-size: .75em; }
+.sc-tel { font-size: .5em; }
+.sc-ko, .sc-pron { font-size: .38em; color: #444; font-weight: 400; }
+.sc-close {
+  position: absolute; top: calc(env(safe-area-inset-top) + 10px); right: 12px;
+  width: 44px; height: 44px; border-radius: 50%; border: 2px solid #000; background: #fff; color: #000; font-size: 1.2rem;
+}
+.sc-hint { margin: 8px 0 0; text-align: center; color: #666; font-size: .85rem; }
+body.sc-open { overflow: hidden; }
+.sc-warn { font-size: .38em; color: #b00020; font-weight: 700; }
+
+/* 시계·다음 일정 */
+.clock-card { padding: 14px 16px; }
+.clocks { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.clock { background: var(--surface-2); border-radius: 10px; padding: 10px 12px; }
+.clock-label { font-weight: 700; font-size: .95rem; }
+.clock-label small { font-weight: 400; color: var(--text-2); }
+.clock-time { font-size: 2rem; font-weight: 700; line-height: 1.15; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.clock-time .sec { font-size: .5em; color: var(--text-2); font-weight: 400; }
+.clock-date { font-size: .9rem; color: var(--text-2); }
+.clock-diff { font-size: .88rem; color: var(--text-2); margin: 8px 2px 0; }
+.next-ev { margin-top: 10px; border-top: 1px solid var(--line); padding-top: 10px; }
+.next-ev:empty { display: none; }
+.ne-label { font-size: .88rem; color: var(--text-2); }
+.ne-title { font-weight: 700; font-size: 1.1rem; margin: 2px 0; }
+.ne-count { font-size: 1.35rem; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+.tz-kr { display: block; font-size: .7rem; font-weight: 700; color: var(--text-2); }
+
+/* 이동경로 지도 */
+:root { --map-nb: #e7eaef; --map-de: #ffffff; --map-edge: #b9c2cf; --map-route: #e0543c; --map-faint: #c9d0da; --map-text: #4a5566; }
+@media (prefers-color-scheme: dark) {
+  :root { --map-nb: #1c2636; --map-de: #26344b; --map-edge: #3d4d66; --map-route: #ff7a5c; --map-faint: #45556e; --map-text: #a9b4c4; }
+}
+.map-card h2 { margin-bottom: 8px; }
+.map-seg { margin-bottom: 8px; }
+.map-wrap { background: var(--map-nb); border-radius: 10px; overflow: hidden; }
+.route-map { display: block; width: 100%; height: auto; }
+.m-nb { fill: var(--map-nb); stroke: var(--map-edge); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.m-de { fill: var(--map-de); stroke: var(--map-edge); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+.m-ref { fill: var(--map-faint); }
+.m-reflbl { fill: var(--map-text); font-family: inherit; }
+.m-leg { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.m-all .m-leg { stroke: var(--map-faint); }
+.m-sel .m-leg { stroke: var(--map-route); }
+.m-pin { fill: var(--brand); stroke: #fff; }
+@media (prefers-color-scheme: dark) { .m-pin { fill: var(--accent); stroke: var(--surface); } }
+.m-pinnum { font-weight: 700; fill: #fff; font-family: inherit; }
+@media (prefers-color-scheme: dark) { .m-pinnum { fill: #1a1300; } }
+.m-stop { fill: #fff; stroke: var(--map-route); }
+.m-lbl { font-weight: 700; fill: var(--text); paint-order: stroke; stroke: var(--map-de); stroke-linejoin: round; font-family: inherit; }
+.m-dot { fill: var(--map-route); stroke: #fff; }
+.map-cap { margin: 10px 2px 4px; }
+.map-legend { font-size: .85rem; color: var(--text-2); display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 4px 2px; }
+.lg-road, .lg-air { display: inline-block; width: 22px; height: 0; border-top: 4px solid var(--map-route); margin-left: 6px; }
+.lg-air { border-top-style: dotted; }
+.lg-pin { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--brand); color: #fff; font-size: .7rem; font-weight: 700; margin-left: 6px; }
+.map-link { background: none; border: 0; padding: 4px 0; color: var(--link); font: inherit; font-size: .9rem; cursor: pointer; min-height: 32px; }
+@media (prefers-color-scheme: dark) { .lg-pin { background: var(--accent); color: #1a1300; } }
