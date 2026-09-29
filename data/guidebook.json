@@ -1,0 +1,1756 @@
+{
+  "meta": {
+    "title": "2026 독일 국외연수",
+    "shortTitle": "독일 연수 가이드북",
+    "subtitle": "브레멘 → 카셀 → 뉘른베르크 → 뮌헨 · 5박 7일",
+    "org": "한국생산성본부(KPC)",
+    "start": "2026-11-16",
+    "end": "2026-11-22",
+    "updated": "2026-09-29",
+    "disclaimer": "일정 및 방문기관은 현지 사정에 따라 일부 변경될 수 있음",
+    "schemaVersion": 2,
+    "tabs": [
+      "home",
+      "schedule",
+      "hotels",
+      "places",
+      "info",
+      "sos"
+    ],
+    "tbdHelp": "확인되지 않은 값은 {\"value\": 값 또는 null, \"tbd\": true, \"note\": 확인할 내용} 형식. 확인되면 문자열로 바꾸면 됨. 목록은 python tools/tbd_report.py"
+  },
+  "home": {
+    "purpose": {
+      "value": null,
+      "tbd": true,
+      "note": "연수 목적 문구 미정"
+    },
+    "highlights": [
+      "독일 항공우주·모빌리티 산업 현장 및 대학 연구기관 방문",
+      "Space Tech Expo Europe 2026 참관 (브레멘)",
+      "뷔르츠부르크·뮌헨 도시 인프라 탐방",
+      {
+        "value": null,
+        "tbd": true,
+        "note": "주요 내용 세부 문구"
+      }
+    ],
+    "flights": [
+      {
+        "no": "LH719",
+        "date": "11/16(월)",
+        "route": "인천 → 뮌헨",
+        "dep": "13:30",
+        "arr": "18:35"
+      },
+      {
+        "no": "LH2118",
+        "date": "11/16(월)",
+        "route": "뮌헨 → 브레멘",
+        "dep": "21:45",
+        "arr": "23:00"
+      },
+      {
+        "no": "LH718",
+        "date": "11/21(토)",
+        "route": "뮌헨 → 인천",
+        "dep": {
+          "value": "16:05",
+          "tbd": true,
+          "note": "웹 스케줄상 16:00 — e-티켓 대조"
+        },
+        "arr": {
+          "value": "11/22 11:10",
+          "tbd": true,
+          "note": "웹 스케줄상 11:15 — e-티켓 대조"
+        }
+      }
+    ],
+    "flightNote": "시각은 모두 현지시각. 최종 시각은 e-티켓 기준. 뮌헨공항은 Terminal 2(루프트한자) 이용.",
+    "meeting": {
+      "place": {
+        "value": "인천국제공항 제1여객터미널 루프트한자 카운터",
+        "tbd": true,
+        "note": "터미널(T1 예상)·카운터 위치"
+      },
+      "time": {
+        "value": null,
+        "tbd": true,
+        "note": "집결 시각"
+      },
+      "notes": [
+        "여권(유효기간 확인), e-티켓, 여권 사본을 지참해 주세요."
+      ]
+    }
+  },
+  "schedule": {
+    "routeImage": {
+      "src": "img/route.webp",
+      "alt": "브레멘(아힘)에서 카셀, 뉘른베르크를 거쳐 뮌헨까지 이어지는 숙소 이동동선 지도",
+      "ready": true,
+      "credit": "이동동선 인포그래픽 (KPC 제작)",
+      "license": null,
+      "sourceUrl": null,
+      "width": 1400,
+      "height": 982
+    },
+    "routeNote": "총 이동거리 약 770km(숙소 기준). 거리·소요시간은 고속도로 기준 개략치이며 교통상황에 따라 달라질 수 있음. ※ 지도 속 아힘 호텔 주소(Undeloher Str.)는 오기 — 공식 주소는 Zum Klümoor 7",
+    "days": [
+      {
+        "day": 1,
+        "date": "2026-11-16",
+        "title": "출국 · 브레멘 도착",
+        "city": "인천 → 뮌헨 → 브레멘",
+        "items": [
+          {
+            "time": {
+              "value": null,
+              "tbd": true,
+              "note": "인천공항 집결 시각"
+            },
+            "title": "인천국제공항 집결",
+            "desc": "루프트한자 카운터"
+          },
+          {
+            "time": "13:30",
+            "title": "LH719 인천 출발",
+            "desc": "비행시간 약 13시간"
+          },
+          {
+            "time": "18:35",
+            "title": "뮌헨 도착 · 입국심사",
+            "desc": "EES(생체정보) 첫 등록 — 대기시간이 길 수 있음"
+          },
+          {
+            "time": "21:45",
+            "title": "LH2118 뮌헨 출발"
+          },
+          {
+            "time": "23:00",
+            "title": "브레멘 도착 · 호텔 이동"
+          }
+        ],
+        "hotelId": "achim",
+        "meals": "기내식"
+      },
+      {
+        "day": 2,
+        "date": "2026-11-17",
+        "title": "브레멘 항공우주 기관 방문",
+        "city": "브레멘",
+        "items": [
+          {
+            "title": "DLR 독일항공우주센터 브레멘",
+            "placeId": "dlr"
+          },
+          {
+            "title": "Airbus Defence and Space 브레멘",
+            "placeId": "airbus"
+          },
+          {
+            "title": "브레멘대학교",
+            "placeId": "unibremen"
+          }
+        ],
+        "hotelId": "achim",
+        "meals": {
+          "value": null,
+          "tbd": true,
+          "note": "식사 계획"
+        },
+        "timesTbd": {
+          "value": null,
+          "tbd": true,
+          "note": "방문 시간대 세부 시간표"
+        }
+      },
+      {
+        "day": 3,
+        "date": "2026-11-18",
+        "title": "Space Tech Expo 참관 · 카셀 이동",
+        "city": "브레멘 → 카셀",
+        "route": "브레멘 → 카셀 약 310km",
+        "items": [
+          {
+            "title": "Space Tech Expo Europe 2026 참관",
+            "desc": "MESSE BREMEN · 관람 09:00–17:00",
+            "placeId": "spacetech"
+          },
+          {
+            "title": "카셀로 이동 (약 310km)"
+          }
+        ],
+        "hotelId": "kassel",
+        "meals": {
+          "value": null,
+          "tbd": true,
+          "note": "식사 계획"
+        },
+        "timesTbd": {
+          "value": null,
+          "tbd": true,
+          "note": "방문 시간대 세부 시간표"
+        }
+      },
+      {
+        "day": 4,
+        "date": "2026-11-19",
+        "title": "기센대학교 · 뷔르츠부르크 탐방",
+        "city": "카셀 → 기센 → 뷔르츠부르크 → 뉘른베르크",
+        "route": "카셀 → 기센 120km → 뷔르츠부르크 200km → 뉘른베르크 110km (약 430km)",
+        "items": [
+          {
+            "title": "기센대학교(JLU) 방문",
+            "placeId": "jlu"
+          },
+          {
+            "title": "뷔르츠부르크 인프라 탐방"
+          },
+          {
+            "title": "뉘른베르크 이동"
+          }
+        ],
+        "hotelId": "nuernberg",
+        "meals": {
+          "value": null,
+          "tbd": true,
+          "note": "식사 계획"
+        },
+        "timesTbd": {
+          "value": null,
+          "tbd": true,
+          "note": "방문 시간대 세부 시간표"
+        }
+      },
+      {
+        "day": 5,
+        "date": "2026-11-20",
+        "title": "Siemens Mobility · hbw · 뮌헨 탐방",
+        "city": "뉘른베르크 → 뮌헨",
+        "route": "뉘른베르크 → 뮌헨 약 170km",
+        "items": [
+          {
+            "title": "Siemens Mobility 방문",
+            "placeId": "siemens",
+            "note": {
+              "value": null,
+              "tbd": true,
+              "note": "방문 사업장(뮌헨-알라흐 / 에를랑겐 등)"
+            }
+          },
+          {
+            "title": "hbw 컨퍼런스센터",
+            "placeId": "hbw"
+          },
+          {
+            "title": "뮌헨 인프라 탐방",
+            "desc": "마리엔광장 크리스마스마켓 개장일(11/20~)"
+          }
+        ],
+        "hotelId": "munich",
+        "meals": {
+          "value": null,
+          "tbd": true,
+          "note": "식사 계획"
+        },
+        "timesTbd": {
+          "value": null,
+          "tbd": true,
+          "note": "방문 시간대 세부 시간표"
+        }
+      },
+      {
+        "day": 6,
+        "date": "2026-11-21",
+        "title": "TUM · BMW Welt · 귀국 출발",
+        "city": "뮌헨",
+        "items": [
+          {
+            "title": "TUM 뮌헨공과대학교",
+            "placeId": "tum"
+          },
+          {
+            "title": "BMW Welt",
+            "desc": "주말은 공장투어 없음",
+            "placeId": "bmw"
+          },
+          {
+            "title": "뮌헨공항 T2 이동 · 탑승수속",
+            "desc": "부가세 환급 대상자는 체크인 전 세관 확인"
+          },
+          {
+            "time": {
+              "value": "16:05",
+              "tbd": true,
+              "note": "웹 스케줄상 16:00 — e-티켓 대조"
+            },
+            "title": "LH718 뮌헨 출발"
+          }
+        ],
+        "stay": "기내 숙박",
+        "meals": {
+          "value": null,
+          "tbd": true,
+          "note": "식사 계획"
+        },
+        "timesTbd": {
+          "value": null,
+          "tbd": true,
+          "note": "방문 시간대 세부 시간표"
+        }
+      },
+      {
+        "day": 7,
+        "date": "2026-11-22",
+        "title": "인천 도착 · 해산",
+        "city": "인천",
+        "items": [
+          {
+            "time": {
+              "value": "11:10",
+              "tbd": true,
+              "note": "웹 스케줄상 11:15 — e-티켓 대조"
+            },
+            "title": "인천국제공항 도착",
+            "desc": "세관 신고 후 해산"
+          }
+        ],
+        "stay": "—",
+        "meals": "기내식"
+      }
+    ]
+  },
+  "hotels": {
+    "items": [
+      {
+        "id": "achim",
+        "label": "1·2일차 · 11/16–17 숙박",
+        "name": "BEST WESTERN HOTEL ACHIM BREMEN",
+        "address": "Zum Klümoor 7, 28832 Achim-Uphusen, Germany",
+        "tel": "+49420276730",
+        "telDisplay": "+49 4202 76730",
+        "checkin": "14:00",
+        "checkout": "11:00",
+        "breakfast": "월–금 06:00–10:00 · 토–일 06:30–10:30",
+        "transit": "브레멘 공항 15km, 브레멘 시내 16km",
+        "amenities": [
+          "리셉션 24시간",
+          "무료 Wi-Fi",
+          "객실 전기포트",
+          "주차장 120면 (1박 €5), 대형버스 주차 3면",
+          {
+            "value": "피트니스·사우나·세탁",
+            "tbd": true,
+            "note": "공식 사이트에 기재 없음"
+          }
+        ],
+        "notes": [
+          "이동동선 인포그래픽의 'Undeloher Str. 1'은 오기 — 공식 주소는 Zum Klümoor 7"
+        ],
+        "lat": 53.0338169,
+        "lng": 8.9603125,
+        "mapQuery": "Best Western Hotel Achim Bremen, Zum Klümoor 7, 28832 Achim",
+        "sources": [
+          "https://www.bestwestern.de/en/hotels/Achim-Uphusen/Best-Western-Hotel-Achim-Bremen/hotel",
+          "https://www.gchhotelgroup.com/en/hotel/best-western-hotel-achim-bremen-en"
+        ],
+        "image": {
+          "src": "img/hotels/achim.webp",
+          "alt": "베스트웨스턴 호텔 아힘 브레멘 외관",
+          "ready": false,
+          "credit": null,
+          "license": null,
+          "sourceUrl": null
+        }
+      },
+      {
+        "id": "kassel",
+        "label": "3일차 · 11/18",
+        "name": "WYNDHAM GARDEN KASSEL",
+        "address": "Heiligenröder Straße 61, 34123 Kassel, Germany",
+        "tel": "+4956152050",
+        "telDisplay": "+49 561 52050",
+        "checkin": "15:00",
+        "checkout": "12:00",
+        "breakfast": "매일 06:30–10:00",
+        "transit": "버스 30번 'Osterholz' 정류장, 카셀 중앙역 5.2km, A7 고속도로 인접",
+        "amenities": [
+          "무료 Wi-Fi",
+          "피트니스",
+          "PRIME Restaurant & Bar (저녁 월–토 18:00–22:00)",
+          "객실 전기포트·미니바",
+          "세탁 서비스",
+          "주차 150면, 전기차 충전 3기",
+          {
+            "value": "사우나",
+            "tbd": true,
+            "note": "공식 사이트에 기재 없음"
+          }
+        ],
+        "lat": 51.3079038,
+        "lng": 9.5487413,
+        "mapQuery": "Wyndham Garden Kassel, Heiligenröder Straße 61, 34123 Kassel",
+        "sources": [
+          "https://www.gchhotelgroup.com/en/hotel/wyndham-garden-hotel-kassel-en",
+          "https://www.wyndhamhotels.com/wyndham-garden/kassel-germany/wyndham-garden-kassel/overview"
+        ],
+        "image": {
+          "src": "img/hotels/kassel.webp",
+          "alt": "윈덤 가든 카셀 외관",
+          "ready": false,
+          "credit": null,
+          "license": null,
+          "sourceUrl": null
+        }
+      },
+      {
+        "id": "nuernberg",
+        "label": "4일차 · 11/19",
+        "name": "NOVINA HOTEL SÜDWESTPARK",
+        "address": "Südwestpark 5D, 90449 Nürnberg, Germany",
+        "tel": "+4991167060",
+        "telDisplay": "+49 911 67060",
+        "checkin": {
+          "value": "15:00",
+          "tbd": true,
+          "note": "제3자 출처(holidaycheck)만 확인"
+        },
+        "checkout": {
+          "value": "11:00",
+          "tbd": true,
+          "note": "제3자 출처(holidaycheck)만 확인"
+        },
+        "breakfast": {
+          "value": "객실 요금 포함",
+          "tbd": true,
+          "note": "조식 시간"
+        },
+        "transit": "뉘른베르크 중앙역 4.8km, 공항 8.4km",
+        "amenities": [
+          "무료 Wi-Fi·LAN",
+          "피트니스",
+          "사우나",
+          "레스토랑 L'Orchidée, 바",
+          "일부 객실 미니바·에어컨",
+          "주차 1일 €14"
+        ],
+        "lat": 49.4288494,
+        "lng": 11.0195028,
+        "mapQuery": "NOVINA HOTEL Südwestpark, Südwestpark 5, 90449 Nürnberg",
+        "sources": [
+          "https://www.novina-suedwestpark.de/en/novina-hotel-suedwestpark-nuernberg/",
+          "https://www.novina-hotels.de/en/novina-hotel-suedwestpark-nuernberg/",
+          "https://tourismus.nuernberg.de/en/booking/hotels/novina-hotel-suedwestpark/"
+        ],
+        "image": {
+          "src": "img/hotels/nuernberg.webp",
+          "alt": "호텔이 있는 뉘른베르크 쥐트베스트파크 업무단지",
+          "ready": true,
+          "credit": "Aarp65 / Wikimedia Commons",
+          "license": "CC BY-SA 3.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:S%C3%BCdwestpark_N%C3%BCrnberg_April_2011_01.JPG",
+          "width": 960,
+          "height": 720
+        }
+      },
+      {
+        "id": "munich",
+        "label": "5일차 · 11/20",
+        "name": "NYX HOTEL MUNICH",
+        "address": "Hofmannstraße 2, 81379 München, Germany",
+        "tel": "+49896933280",
+        "telDisplay": "+49 89 6933280",
+        "checkin": "15:00",
+        "checkout": "12:00",
+        "breakfast": "매일 06:30–10:30",
+        "transit": "버스 53번 'Zielstattstraße' 50m, U3 Aidenbachstraße역 600m",
+        "amenities": [
+          "무료 Wi-Fi",
+          "피트니스",
+          "사우나",
+          "레스토랑 Hans im Glück (12:00–22:30)",
+          "바 (12:00–24:00)",
+          "객실 에스프레소머신",
+          {
+            "value": "세탁",
+            "tbd": true,
+            "note": "공식 사이트에 기재 없음"
+          }
+        ],
+        "lat": 48.1023059,
+        "lng": 11.5297462,
+        "mapQuery": "NYX Hotel Munich, Hofmannstraße 2, 81379 München",
+        "sources": [
+          "https://www.nyx-hotels.com/munich/nyx-hotel-munich",
+          "https://www.leonardo-hotels.com/munich/nyx-hotel-munich"
+        ],
+        "image": {
+          "src": "img/hotels/munich.webp",
+          "alt": "NYX 호텔 뮌헨 외관",
+          "ready": false,
+          "credit": null,
+          "license": null,
+          "sourceUrl": null
+        }
+      }
+    ],
+    "venues": [
+      {
+        "id": "flydeck",
+        "label": "세미나룸 · 브레멘",
+        "name": "FLYDECK BREMEN",
+        "address": {
+          "value": "Hanna-Kunath-Str. 33, 28199 Bremen, Germany",
+          "tbd": true,
+          "note": "웹상 FLY DECK은 Teerhof 59, 28199 Bremen — 제공 주소는 AES사 주소로 확인됨. 실제 세미나 장소 확인"
+        },
+        "notes": [
+          "제공 자료 주소를 표기함. 웹 조사상 FLY DECK 위치는 **Teerhof 59, 28199 Bremen**(ecos work spaces 7층)"
+        ],
+        "desc": "베저강 파노라마 뷰의 이벤트·컨퍼런스 공간(약 200㎡, 극장식 120석, 옥상테라스) — 웹 조사 기준(Teerhof 59)",
+        "mapQuery": "Hanna-Kunath-Str. 33, 28199 Bremen",
+        "sources": [
+          "https://flydeck-eventlocation.de/",
+          "https://www.placces.de/en/exp/fly-deck-bremen",
+          "https://www.raumperle.de/raum/fly-deck-teerhof-188/"
+        ],
+        "image": {
+          "src": "img/hotels/flydeck.webp",
+          "alt": "FLYDECK 브레멘 내부",
+          "ready": false,
+          "credit": null,
+          "license": null,
+          "sourceUrl": null
+        }
+      }
+    ]
+  },
+  "places": {
+    "orgs": [
+      {
+        "id": "dlr",
+        "label": "2일차 · 브레멘",
+        "name": "DLR 독일항공우주센터 브레멘",
+        "nameLocal": "Deutsches Zentrum für Luft- und Raumfahrt (DLR), Standort Bremen",
+        "summary": [
+          "독일 연방 항공·우주 연구기관 — 직원 약 12,000명, 51개 연구소·시설 (본부 쾰른)",
+          "브레멘 캠퍼스는 2007년 첫 연구소 개설, 우주시스템연구소(IRS)·원격탐사·위성측지·양자기술 연구소 입주",
+          "IRS는 우주선 설계, 행성탐사, 우주수송시스템, 착륙기술 연구 — 재사용 발사체 실험 CALLISTO, 화성위성 탐사 MMX 참여"
+        ],
+        "address": "Robert-Hooke-Straße 7, 28359 Bremen, Germany",
+        "tel": "+49421244201908",
+        "telDisplay": "+49 421 24420-1908",
+        "web": "https://www.dlr.de/de/irs",
+        "mapQuery": "DLR Institut für Raumfahrtsysteme, Robert-Hooke-Straße 7, 28359 Bremen",
+        "sources": [
+          "https://www.dlr.de/de/das-dlr/ueber-uns",
+          "https://www.dlr.de/de/das-dlr/standorte-und-bueros/bremen",
+          "https://www.dlr.de/en/irs"
+        ],
+        "image": {
+          "src": "img/places/dlr.webp",
+          "alt": "DLR 브레멘이 있는 로베르트-후크 거리 5·7번지 건물",
+          "ready": true,
+          "credit": "Foto: Jürgen Howaldt / Wikimedia Commons",
+          "license": "CC BY-SA 4.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Robert-Hooke-Stra%C3%9Fe_5_%2B_7.jpg",
+          "width": 960,
+          "height": 540
+        }
+      },
+      {
+        "id": "airbus",
+        "label": "2일차 · 브레멘",
+        "name": "Airbus Defence and Space 브레멘",
+        "nameLocal": "Airbus Defence and Space, Bremen",
+        "summary": [
+          "에어버스의 유럽 유인우주비행·우주로보틱스 역량 센터",
+          "NASA 오리온 우주선의 유럽서비스모듈(ESM), ISS 콜럼버스 실험실, Bartolomeo 플랫폼 제작 — 과거 Spacelab·ATV도 이곳에서 제작",
+          "2026년 7월 아르테미스 II 승무원이 방문해 ESM 제작진에 감사를 전함",
+          "브레멘은 에어버스의 독일 내 2번째 규모 거점(민항 포함 약 4,100명)"
+        ],
+        "address": {
+          "value": "Airbus-Allee 1, 28199 Bremen, Germany",
+          "tbd": true,
+          "note": "비공식 디렉터리 출처 — 공식 주소 확인"
+        },
+        "tel": {
+          "value": null,
+          "tbd": true,
+          "note": "공식 대표번호"
+        },
+        "web": "https://www.airbus.com/en/about-us/our-worldwide-presence/airbus-in-europe/airbus-in-germany",
+        "mapQuery": "Airbus-Allee 1, 28199 Bremen",
+        "sources": [
+          "https://www.airbus.com/en/products-services/space/space-technology-made-in-germany",
+          "https://www.airbus.com/en/newsroom/stories/2026-07-artemis-ii-crew-touches-down-at-airbus-in-bremen-to-celebrate-a-flawless-flight",
+          "https://www.wfb-bremen.de/en/page/bremen-invest/aerospace-companies-bremen"
+        ],
+        "image": {
+          "src": "img/places/airbus.webp",
+          "alt": "Airbus가 제작한 오리온 우주선 유럽서비스모듈(ESM)",
+          "ready": true,
+          "credit": "NASA Johnson Space Center / NASA/Radislav Sinyak / Wikimedia Commons",
+          "license": "Public domain",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:European_Service_Module_(jsc2022e046226).jpg",
+          "width": 960,
+          "height": 640
+        }
+      },
+      {
+        "id": "unibremen",
+        "label": "2일차 · 브레멘",
+        "name": "브레멘대학교",
+        "nameLocal": "Universität Bremen",
+        "summary": [
+          "1971년 설립 — 학생 약 18,000명, 연구인력 약 2,300명",
+          "해양·극지, 소재과학, 인지·미디어·기계 등 5대 중점분야, 2026년부터 우수성 클러스터 2개 선정",
+          "부설 ZARM이 미소중력 실험시설 '브레멘 낙하탑(Fallturm)' 운영 — 우주 분야 대표 연구시설"
+        ],
+        "address": "Bibliothekstraße 1, 28359 Bremen, Germany",
+        "tel": "+494212181",
+        "telDisplay": "+49 421 218-1",
+        "web": "https://www.uni-bremen.de",
+        "lat": 53.10861,
+        "lng": 8.85361,
+        "sources": [
+          "https://www.uni-bremen.de/universitaet/profil",
+          "https://www.uni-bremen.de/impressum",
+          "https://de.wikipedia.org/wiki/Universität_Bremen"
+        ],
+        "image": {
+          "src": "img/places/unibremen.webp",
+          "alt": "하늘에서 본 브레멘대학교 캠퍼스",
+          "ready": true,
+          "credit": "Kai Bojens / Patrick Meiß / Wikimedia Commons",
+          "license": "CC BY-SA 3.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Campus_der_Universit%C3%A4t_Bremen,_von_oben,_2007.JPG",
+          "width": 960,
+          "height": 638
+        },
+        "mapQuery": "Universität Bremen, Bibliothekstraße 1, 28359 Bremen"
+      },
+      {
+        "id": "spacetech",
+        "label": "3일차 · 브레멘",
+        "name": "Space Tech Expo Europe 2026",
+        "nameLocal": "MESSE BREMEN / CCB",
+        "summary": [
+          "유럽 최대 규모의 B2B 우주산업 전시회 — 전시사 950개 이상, 방문객 12,300명 이상 예상",
+          "기간 2026.11.17(화)–19(목), 방문일 11/18은 행사 2일차",
+          "주최: Smarter Shows Ltd. / 전시홀 2·3·4·4.1·5·6·7, ÖVB-Arena"
+        ],
+        "hours": "11/17–18 09:00–17:00 (08:00 입장 개시) · 11/19 09:00–15:00",
+        "address": "Findorffstraße 101, 28215 Bremen, Germany",
+        "web": "https://www.spacetechexpo-europe.com",
+        "mapQuery": "MESSE BREMEN, Findorffstraße 101, 28215 Bremen",
+        "sources": [
+          "https://congress-bremen.com/en/events/space-tech-expo-europe/",
+          "https://spacepolicyonline.com/events/space-tech-expo-europe-2026-nov-17-19-2026-bremen-germany/"
+        ],
+        "image": {
+          "src": "img/places/spacetech.webp",
+          "alt": "메세 브레멘 전시장 7홀 외관",
+          "ready": true,
+          "credit": "Raimond Spekking / Wikimedia Commons",
+          "license": "CC BY-SA 3.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Messe_Centrum_Bremen_-_Halle_7-2833.jpg",
+          "width": 960,
+          "height": 546
+        },
+        "notes": [
+          {
+            "value": "공식 사이트 직접 확인 불가 — 일정·장소는 CONGRESS BREMEN 기준",
+            "tbd": true,
+            "note": "출발 전 공식 사이트 재확인"
+          }
+        ]
+      },
+      {
+        "id": "jlu",
+        "label": "4일차 · 기센",
+        "name": "기센대학교 (JLU)",
+        "nameLocal": "Justus-Liebig-Universität Gießen",
+        "summary": [
+          "1607년 설립된 유서 깊은 대학 — 학생 약 25,000명, 헤센주 2위 규모",
+          "의학·수의학·농학·영양·식품과학을 아우르는 생명과학 구성은 독일 유일",
+          "우수성 클러스터 3개(배터리 연구 POLiS 등), 화학자 리비히·물리학자 뢴트겐이 활동한 대학"
+        ],
+        "address": "Ludwigstraße 23, 35390 Gießen, Germany",
+        "tel": "+49641990",
+        "telDisplay": "+49 641 99-0",
+        "web": "https://www.uni-giessen.de",
+        "lat": 50.58056,
+        "lng": 8.67694,
+        "sources": [
+          "https://www.uni-giessen.de/de/ueber-uns",
+          "https://www.uni-giessen.de/de/ueber-uns/impressum",
+          "https://de.wikipedia.org/wiki/Justus-Liebig-Universität_Gießen"
+        ],
+        "image": {
+          "src": "img/places/jlu.webp",
+          "alt": "기센대학교 본관",
+          "ready": true,
+          "credit": "Stefan Flöper / Wikimedia Commons",
+          "license": "CC BY-SA 4.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hauptgeb%C3%A4ude_Justus-Liebig-Universit%C3%A4t_Gie%C3%9Fen.jpg",
+          "width": 960,
+          "height": 720
+        },
+        "mapQuery": "Justus-Liebig-Universität Gießen, Ludwigstraße 23, 35390 Gießen"
+      },
+      {
+        "id": "siemens",
+        "label": "5일차 · 뮌헨",
+        "name": "Siemens Mobility",
+        "nameLocal": "Siemens Mobility GmbH",
+        "summary": [
+          "지멘스 그룹의 철도·교통 전문 기업 — 철도차량, 신호·전력 인프라, 서비스, 디지털 솔루션 (전 세계 직원 43,075명)",
+          "2025년 본사를 뮌헨-알라흐로 이전, 약 2.5억 유로를 투자한 유럽 최신 철도차량 공장 겸 서비스센터 운영",
+          "알라흐 공장에서 Vectron 기관차 연 최대 385대 생산"
+        ],
+        "address": "Krauss-Maffei-Straße 2, 80997 München, Germany",
+        "tel": "+498938035491",
+        "telDisplay": "+49 89 3803 5491",
+        "web": "https://www.mobility.siemens.com",
+        "notes": [
+          {
+            "value": "실제 방문 사업장 — 뮌헨-알라흐 공장(위 주소) 또는 에를랑겐 등",
+            "tbd": true,
+            "note": "방문 사업장"
+          }
+        ],
+        "sources": [
+          "https://www.mobility.siemens.com/global/en/company/about-us.html",
+          "https://press.siemens.com/global/en/pressrelease/siemens-opens-one-europes-most-modern-train-factories-and-service-centers-munich",
+          "https://www.mobility.siemens.com/global/en/general/legal.html"
+        ],
+        "image": {
+          "src": "img/places/siemens.webp",
+          "alt": "뮌헨-알라흐의 Siemens Mobility 사업장",
+          "ready": true,
+          "credit": "Wikitarisch / Wikimedia Commons",
+          "license": "CC BY-SA 4.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Siemens_mobility_(M%C3%BCnchen-Allach).jpg",
+          "width": 960,
+          "height": 540
+        },
+        "mapQuery": "Siemens Mobility, Krauss-Maffei-Straße 2, 80997 München"
+      },
+      {
+        "id": "hbw",
+        "label": "5일차 · 뮌헨",
+        "name": "hbw 컨퍼런스센터 (바이에른 경제회관)",
+        "nameLocal": "hbw | Haus der Bayerischen Wirtschaft",
+        "summary": [
+          "바이에른 경제단체연합(vbw) 본부가 있는 뮌헨 도심 컨퍼런스센터",
+          "옛 Grand Hotel Continental 부지에 1997년 개관 — Europasaal(최대 225명) 등 회의실 보유",
+          "뮌헨 중앙역·카를스플라츠(Stachus) 인근"
+        ],
+        "address": "Max-Joseph-Straße 5, 80333 München, Germany",
+        "tel": "+4989551780",
+        "telDisplay": "+49 89 551 78-0",
+        "web": "https://www.hbw.de",
+        "notes": [
+          {
+            "value": "일정표의 'HBW 컨퍼런스 센터'를 이 시설로 판단함",
+            "tbd": true,
+            "note": "주최 측 최종 확인"
+          }
+        ],
+        "sources": [
+          "https://www.hbw.de/kontakt/impressum",
+          "https://www.hbw.de/en/information-conferencecenter/the-hbw/",
+          "https://www.vbw-bayern.de/vbw/%C3%9Cber-uns/Organisation/Standorte/Zentrale/index.jsp"
+        ],
+        "image": {
+          "src": "img/places/hbw.webp",
+          "alt": "바이에른 경제회관(hbw) 입구",
+          "ready": true,
+          "credit": "HBW-Haus der bayerischen Wirtschaft / Wikimedia Commons",
+          "license": "CC BY-SA 3.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Eingangsbereich_HBW.jpg",
+          "width": 522,
+          "height": 391
+        },
+        "mapQuery": "hbw Haus der Bayerischen Wirtschaft, Max-Joseph-Straße 5, 80333 München"
+      },
+      {
+        "id": "tum",
+        "label": "6일차 · 뮌헨",
+        "name": "TUM 뮌헨공과대학교",
+        "nameLocal": "Technische Universität München",
+        "summary": [
+          "1868년 바이에른 국왕 루트비히 2세가 설립한 독일 대표 공과대학",
+          "학생 약 52,000명(유학생 45%), 교수 약 700명",
+          "노벨상 수상자 19명, 2025년 한 해 스타트업 115개 배출"
+        ],
+        "address": "Arcisstraße 21, 80333 München, Germany",
+        "tel": "+498928901",
+        "telDisplay": "+49 89 289 01",
+        "web": "https://www.tum.de",
+        "notes": [
+          {
+            "value": "본교(Arcisstraße 21) 또는 가르힝 연구캠퍼스(Boltzmannstraße 15, 85748 Garching)",
+            "tbd": true,
+            "note": "방문 캠퍼스"
+          }
+        ],
+        "sources": [
+          "https://www.tum.de/en/about-tum/facts-and-figures/history",
+          "https://www.tum.de/en/about-tum/facts-and-figures/tum-in-figures",
+          "https://www.tum.de/en/about-tum/contact-directions"
+        ],
+        "image": {
+          "src": "img/places/tum.webp",
+          "alt": "TUM 본교 아르치스 거리 21번지 정문",
+          "ready": true,
+          "credit": "Mattes / Wikimedia Commons",
+          "license": "CC BY-SA 2.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Technische_Universit%C3%A4t_M%C3%BCnchen,_Arcisstra%C3%9Fe_21_%E2%80%94_Eingangsbereich_mit_Fahnen.JPG",
+          "width": 960,
+          "height": 720
+        },
+        "mapQuery": "Technische Universität München, Arcisstraße 21, 80333 München"
+      },
+      {
+        "id": "bmw",
+        "label": "6일차 · 뮌헨",
+        "name": "BMW Welt",
+        "nameLocal": "BMW Welt, Olympiapark München",
+        "summary": [
+          "2007년 개관한 BMW 브랜드 체험·신차 인도 센터(설계 COOP HIMMELB(L)AU), 입장 무료",
+          "올림피아파크 옆, BMW 그룹 본사·BMW 박물관(유료)과 인접",
+          "주말·공휴일에는 공장투어가 운영되지 않음"
+        ],
+        "hours": "토요일 건물 07:30–24:00, 전시·안내 09:00–18:00 · BMW 박물관 화–일 10:00–18:00",
+        "address": "Am Olympiapark 1, 80809 München, Germany",
+        "tel": "+4989125016001",
+        "telDisplay": "+49 89 1250 16001",
+        "web": "https://www.bmw-welt.com",
+        "lat": 48.17694,
+        "lng": 11.55667,
+        "mapQuery": "BMW Welt, Am Olympiapark 1, 80809 München",
+        "sources": [
+          "https://www.bmw-welt.com/en/index.html",
+          "https://www.bmw-welt.com/en/ausstellungen/fuehrungen.html",
+          "https://www.bmwgroup.com/en/general/approach-welt-museum.html"
+        ],
+        "image": {
+          "src": "img/places/bmw.webp",
+          "alt": "BMW Welt 외관",
+          "ready": true,
+          "credit": "Diego Delso / Wikimedia Commons",
+          "license": "CC BY-SA 3.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:BMW_Welt,_M%C3%BAnich,_Alemania,_2013-04-22,_DD_02.jpg",
+          "width": 960,
+          "height": 644
+        },
+        "notes": [
+          "주말·공휴일에는 공장투어가 운영되지 않아 11/21(토)은 전시관 관람 위주"
+        ]
+      }
+    ],
+    "cities": [
+      {
+        "id": "bremen",
+        "label": "1–3일차",
+        "name": "브레멘 Bremen",
+        "intro": "북독일의 한자동맹 항구도시이자 브레멘주의 주도. 인구 약 58.8만 명으로 항공우주 산업이 발달한 도시다.",
+        "weather": {
+          "temp": "평균 최고 8.6℃ / 최저 2.8℃",
+          "sun": "07:49–16:30 (11/16)"
+        },
+        "sights": [
+          {
+            "name": "시청사와 롤란트 석상",
+            "desc": "마르크트 광장의 유네스코 세계유산"
+          },
+          {
+            "name": "슈노어 지구",
+            "desc": "17~18세기 어부·선원 주택과 좁은 골목이 남은 구시가지"
+          },
+          {
+            "name": "뵈트허 거리 · 브레멘 음악대 동상",
+            "desc": "그림 동화 기념 청동상과 아르누보 예술 거리"
+          }
+        ],
+        "foods": [
+          {
+            "name": "콜 운트 핑켈",
+            "desc": "케일(그린콜)에 곡물 소시지를 곁들인 겨울 요리"
+          },
+          {
+            "name": "크니프",
+            "desc": "귀리와 돼지고기로 만든 향토 음식"
+          }
+        ],
+        "sources": [
+          "https://en.wikipedia.org/wiki/Bremen",
+          "https://whc.unesco.org/en/list/1087",
+          "https://www.bremen.de/leben-in-bremen/kulinarisch/bremisch-geniessen"
+        ],
+        "image": {
+          "src": "img/cities/bremen.webp",
+          "alt": "브레멘 시청사",
+          "ready": true,
+          "credit": "Dietmar Rabich / Wikimedia Commons",
+          "license": "CC BY-SA 4.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bremen,_Rathaus_--_2021_--_6357.jpg",
+          "width": 960,
+          "height": 640
+        }
+      },
+      {
+        "id": "kassel",
+        "label": "3일차",
+        "name": "카셀 Kassel",
+        "intro": "헤센주 북부 풀다강 변의 도시(인구 약 19.7만). 5년마다 현대미술전 도쿠멘타가 열리며, 그림 형제가 동화 대부분을 집필한 곳이다.",
+        "weather": {
+          "temp": "평균 최고 7.2℃ / 최저 2.3℃",
+          "sun": "07:39–16:34 (11/16)"
+        },
+        "sights": [
+          {
+            "name": "빌헬름스회에 산악공원",
+            "desc": "헤라클레스 동상과 계단식 물길이 있는 유네스코 세계유산"
+          },
+          {
+            "name": "빌헬름스회에 궁전",
+            "desc": "고미술품과 회화 갤러리 소장"
+          }
+        ],
+        "foods": [
+          {
+            "name": "아레 부르슈트",
+            "desc": "공기 중에서 숙성시킨 북헤센 소시지(EU 지리적표시)"
+          }
+        ],
+        "sources": [
+          "https://en.wikipedia.org/wiki/Kassel",
+          "https://whc.unesco.org/en/list/1413",
+          "https://www.kassel.de/buerger/stadtgeschichte/lokales/spezialitaeten.php"
+        ],
+        "image": {
+          "src": "img/cities/kassel.webp",
+          "alt": "빌헬름스회에 산악공원과 헤라클레스 동상",
+          "ready": true,
+          "credit": "Dguendel / Wikimedia Commons",
+          "license": "CC BY 4.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kassel,_Bergpark_Wilhelmsh%C3%B6he,_Blick_zum_Herkules_und_zum_Jussow-Tempel.jpg",
+          "width": 960,
+          "height": 720
+        }
+      },
+      {
+        "id": "giessen",
+        "label": "4일차",
+        "name": "기센 Gießen",
+        "intro": "란강 변의 대학도시. 인구 약 8.9만 명 가운데 대학생이 약 3.7만 명이며, 1607년 설립된 기센대학교가 있다.",
+        "weather": {
+          "temp": {
+            "value": null,
+            "tbd": true,
+            "note": "기센 11월 평균기온 출처 미확보"
+          },
+          "sun": "07:45–16:37 (11/19)"
+        },
+        "sights": [
+          {
+            "name": "마테마티쿰",
+            "desc": "세계 최초의 체험형 수학박물관(2002년 개관)"
+          },
+          {
+            "name": "기센 식물원",
+            "desc": "1609년 조성, 원위치에 남은 독일 최고(最古) 식물원"
+          },
+          {
+            "name": "리비히 박물관",
+            "desc": "화학자 리비히의 옛 실험실"
+          }
+        ],
+        "foods": [
+          {
+            "name": "사과와인(에벨보이)",
+            "desc": "헤센주 전통 음료"
+          },
+          {
+            "name": "한트케제 미트 무직",
+            "desc": "양파 식초에 절인 헤센 치즈 요리"
+          }
+        ],
+        "sources": [
+          "https://en.wikipedia.org/wiki/Gie%C3%9Fen",
+          "https://hessen-tourist.de/giessen/sehenswuerdigkeiten-und-attraktionen-giessen/",
+          "https://www.hessen-tourismus.de/essen-trinken/hessische-spezialitaeten"
+        ],
+        "image": {
+          "src": "img/cities/giessen.webp",
+          "alt": "기센 구시가지의 옛 성(Altes Schloss)",
+          "ready": true,
+          "credit": "Tournasol7 / Wikimedia Commons",
+          "license": "CC BY-SA 4.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Altes_Schloss_in_Giessen_(4).jpg",
+          "width": 960,
+          "height": 720
+        }
+      },
+      {
+        "id": "wuerzburg",
+        "label": "4일차",
+        "name": "뷔르츠부르크 Würzburg",
+        "intro": "바이에른주 프랑켄 지방 마인강 변의 도시(인구 약 13.4만). 1945년 폭격 이후 재건된 바로크 도시다.",
+        "weather": {
+          "temp": "평균 최고 8.0℃ / 최저 2.4℃",
+          "sun": "07:37–16:34 (11/19)"
+        },
+        "sights": [
+          {
+            "name": "뷔르츠부르크 레지덴츠",
+            "desc": "티에폴로의 대형 천장화가 있는 바로크 궁전, 유네스코 세계유산"
+          },
+          {
+            "name": "마리엔베르크 요새",
+            "desc": "언덕 위에서 구시가지를 내려다보는 요새"
+          },
+          {
+            "name": "알테 마인교",
+            "desc": "성인 석상이 늘어선 15~16세기 석교"
+          }
+        ],
+        "foods": [
+          {
+            "name": "프랑켄 와인",
+            "desc": "납작하고 둥근 복스보이텔 병에 담긴 화이트와인"
+          },
+          {
+            "name": "메피슐리",
+            "desc": "마인강 작은 민물고기 튀김"
+          }
+        ],
+        "sources": [
+          "https://en.wikipedia.org/wiki/W%C3%BCrzburg",
+          "https://whc.unesco.org/en/list/169",
+          "https://www.wuerzburg.de/tourismus/wuerzburg-entdecken/weinundweinland/der-bocksbeutel"
+        ],
+        "image": {
+          "src": "img/cities/wuerzburg.webp",
+          "alt": "뷔르츠부르크 레지덴츠",
+          "ready": true,
+          "credit": "Dietmar Rabich / Wikimedia Commons",
+          "license": "CC BY-SA 4.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:W%C3%BCrzburg,_Residenz_--_2018_--_0162.jpg",
+          "width": 960,
+          "height": 640
+        }
+      },
+      {
+        "id": "nuernberg",
+        "label": "4일차",
+        "name": "뉘른베르크 Nürnberg",
+        "intro": "바이에른주 제2의 도시(인구 약 53만). 신성로마제국의 주요 도시이자 화가 뒤러의 고향이며, 1945~46년 전범재판이 열린 곳이다.",
+        "weather": {
+          "temp": "평균 최고 7.8℃ / 최저 1.5℃",
+          "sun": "07:31–16:31 (11/19)"
+        },
+        "sights": [
+          {
+            "name": "카이저부르크(황제성)",
+            "desc": "신성로마제국 황제들이 머문 중세 성"
+          },
+          {
+            "name": "나치 전당대회 기록관",
+            "desc": "2026년 5월 새 상설전시 개관"
+          },
+          {
+            "name": "뉘른베르크 재판 기념관",
+            "desc": "전범재판이 열린 600호 법정"
+          }
+        ],
+        "foods": [
+          {
+            "name": "뉘른베르거 로스트브라트부르스트",
+            "desc": "손가락 크기의 구운 소시지(EU 지리적표시)"
+          },
+          {
+            "name": "레프쿠헨",
+            "desc": "향신료를 넣은 전통 과자(EU 지리적표시)"
+          }
+        ],
+        "sources": [
+          "https://en.wikipedia.org/wiki/Nuremberg",
+          "https://museen.nuernberg.de/dokuzentrum",
+          "https://www.nuernberg.de/internet/eu_buero/nuernbergerbratwurst.html"
+        ],
+        "image": {
+          "src": "img/cities/nuernberg.webp",
+          "alt": "뉘른베르크 카이저부르크",
+          "ready": true,
+          "credit": "Fred Romero from Paris, France / Wikimedia Commons",
+          "license": "CC BY 2.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:N%C3%BCrnberg_-_N%C3%BCrnberger_Burg_(1).jpg",
+          "width": 960,
+          "height": 720
+        }
+      },
+      {
+        "id": "muenchen",
+        "label": "5–6일차",
+        "name": "뮌헨 München",
+        "intro": "바이에른주 주도이자 독일 제3의 도시(인구 약 150만). BMW·지멘스 본사가 있는 산업·기술 중심지이며 1972년 올림픽 개최지다.",
+        "weather": {
+          "temp": "평균 최고 8.2℃ / 최저 2.1℃",
+          "sun": "07:25–16:33 (11/19)"
+        },
+        "sights": [
+          {
+            "name": "마리엔광장과 신시청사",
+            "desc": "뮌헨의 중심 광장 — 11/20부터 크리스마스마켓 개장(월–토 10–21시)"
+          },
+          {
+            "name": "프라우엔 교회",
+            "desc": "쌍둥이 탑의 뮌헨 대성당"
+          },
+          {
+            "name": "님펜부르크 궁전",
+            "desc": "바이에른 왕가의 여름 궁전"
+          }
+        ],
+        "foods": [
+          {
+            "name": "바이스부르스트",
+            "desc": "정오 전에 먹는 흰 소시지, 단 겨자·브레첼과 함께"
+          },
+          {
+            "name": "뮌헨 맥주",
+            "desc": "헬레스, 바이스비어(밀맥주)"
+          }
+        ],
+        "sources": [
+          "https://en.wikipedia.org/wiki/Munich",
+          "https://www.muenchen.travel/artikel/essen-trinken/wurstsorten-typologie",
+          "https://www.christkindlmarkt-muenchen.de/en/home"
+        ],
+        "image": {
+          "src": "img/cities/muenchen.webp",
+          "alt": "뮌헨 마리엔광장의 신시청사",
+          "ready": true,
+          "credit": "Dietmar Rabich / Wikimedia Commons",
+          "license": "CC BY-SA 4.0",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:M%C3%BCnchen,_Rathaus_--_2011_--_1262.jpg",
+          "width": 960,
+          "height": 640
+        }
+      }
+    ],
+    "country": {
+      "facts": [
+        {
+          "label": "국명",
+          "value": "독일연방공화국 (Bundesrepublik Deutschland)"
+        },
+        {
+          "label": "수도",
+          "value": "베를린"
+        },
+        {
+          "label": "면적",
+          "value": "약 357,596㎢ (한반도의 약 1.6배)"
+        },
+        {
+          "label": "인구",
+          "value": "약 8,350만 명 (2025.12.31 기준)"
+        },
+        {
+          "label": "언어",
+          "value": "독일어"
+        },
+        {
+          "label": "통화",
+          "value": "유로 (EUR, €)"
+        },
+        {
+          "label": "시차",
+          "value": "한국보다 **8시간 늦음** (11월, 서머타임 종료 후)\n독일 09:00 = 한국 17:00"
+        },
+        {
+          "label": "전압",
+          "value": "230V / 50Hz, C·F형 플러그 — 한국 플러그 그대로 사용 가능"
+        },
+        {
+          "label": "1인당 GDP",
+          "value": {
+            "value": "약 59,925 USD (IMF 2025 추정)",
+            "tbd": true,
+            "note": "IMF 원문 재확인"
+          }
+        }
+      ],
+      "notes": [
+        "60Hz 전용 가전은 고장 위험이 있으니 100–240V 겸용 표시를 확인하세요."
+      ],
+      "sources": [
+        "https://0404.go.kr/ntnSafetyInfo/34/detail",
+        "https://www.destatis.de/DE/Presse/Pressemitteilungen/2026/06/PD26_203_124.html",
+        "https://www.muenchen.de/aktuell/sommerzeit-winterzeit-uhr-umstellung-2026",
+        "https://www.worldstandards.eu/electricity/plug-voltage-by-country/germany/",
+        "https://overseas.mofa.go.kr/de-ko/brd/m_7220/view.do?seq=1319314&page=2"
+      ],
+      "image": {
+        "src": "img/country/germany.webp",
+        "alt": "베를린 브란덴부르크 문",
+        "ready": true,
+        "credit": "Thomas Wolf, www.foto-tw.de / Wikimedia Commons",
+        "license": "CC BY-SA 3.0",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Brandenburger_Tor_abends.jpg",
+        "width": 960,
+        "height": 640
+      }
+    }
+  },
+  "info": {
+    "sections": [
+      {
+        "id": "weather",
+        "short": "날씨·옷차림",
+        "title": "11월 날씨와 옷차림",
+        "lead": "평균 기온 2~8℃, 비와 바람이 잦아 체감온도가 낮습니다. **오후 4시 30분 전후 해가 집니다.**",
+        "table": {
+          "head": [
+            "도시",
+            "최고/최저",
+            "일출–일몰"
+          ],
+          "rows": [
+            [
+              "브레멘",
+              "8.6 / 2.8℃",
+              "07:49–16:30"
+            ],
+            [
+              "카셀",
+              "7.2 / 2.3℃",
+              "07:39–16:34"
+            ],
+            [
+              "뷔르츠부르크",
+              "8.0 / 2.4℃",
+              "07:37–16:34"
+            ],
+            [
+              "뉘른베르크",
+              "7.8 / 1.5℃",
+              "07:31–16:31"
+            ],
+            [
+              "뮌헨",
+              "8.2 / 2.1℃",
+              "07:25–16:33"
+            ]
+          ]
+        },
+        "items": [
+          {
+            "title": "옷차림",
+            "open": true,
+            "body": [
+              "방수 기능이 있는 보온 외투(패딩·코트)",
+              "겹쳐 입기: 발열내의 + 니트·플리스 + 외투",
+              "목도리·장갑·모자",
+              "방수 신발, 접이식 우산",
+              "기관 방문용 비즈니스 복장"
+            ]
+          }
+        ],
+        "sources": [
+          "https://en.wikipedia.org/wiki/Munich",
+          "https://en.wikipedia.org/wiki/Bremen",
+          "https://api.sunrise-sunset.org/json?lat=48.1351&lng=11.5820&date=2026-11-19&tzid=Europe/Berlin",
+          "https://www.roughguides.com/germany/when-to-go/november/"
+        ]
+      },
+      {
+        "id": "living",
+        "short": "생활정보",
+        "title": "현지 생활정보",
+        "items": [
+          {
+            "title": "팁 문화",
+            "body": "의무는 아니지만 식당에서는 5~10% 정도, 택시는 유로 단위로 올려 냅니다. 계산할 때 '총액 얼마로 해 주세요'라고 말하는 방식이 일반적입니다."
+          },
+          {
+            "title": "일요일·공휴일 상점 휴무",
+            "body": [
+              "일요일·공휴일에는 대부분 상점이 문을 닫습니다 (중앙역·공항·주유소 일부 예외).",
+              "바이에른주 평일 영업 06:00–20:00.",
+              "11/18(수) '속죄와 기도의 날'은 작센주만 공휴일 → 방문 도시는 정상 영업.",
+              "11/22(일)은 추모일로 크리스마스마켓도 휴장."
+            ]
+          },
+          {
+            "title": "화장실은 유료",
+            "body": [
+              "고속도로 휴게소(SANIFAIR) 1유로 — 매장에서 쓸 수 있는 1유로 상품권을 돌려줍니다.",
+              "주요 중앙역 화장실 1.50유로.",
+              "동전을 미리 준비하세요."
+            ]
+          },
+          {
+            "title": "판트(Pfand) 병 보증금",
+            "body": [
+              "음료 가격에 병 보증금이 포함됩니다: 일회용 병·캔 0.25유로, 재사용 맥주병 0.08유로.",
+              "슈퍼마켓 반환기(Leergutautomat)에 넣으면 영수증이 나오고 계산대에서 환급됩니다."
+            ]
+          },
+          {
+            "title": "현금과 카드",
+            "body": [
+              "호텔·대형 매장은 신용카드 가능, 일부 식당·상점은 현금만 받습니다.",
+              "20유로 이하 소액권 위주로 현금을 휴대하세요."
+            ]
+          },
+          {
+            "title": "수돗물",
+            "body": [
+              "독일 수돗물은 그대로 마셔도 됩니다(연방환경청 '매우 좋음').",
+              {
+                "value": "식당에서 물은 보통 유료 생수로 주문합니다.",
+                "tbd": true,
+                "note": "식당 관행 출처 미확보"
+              }
+            ]
+          },
+          {
+            "title": "크리스마스마켓",
+            "body": "뮌헨 마리엔광장 크리스마스마켓이 11/20(금)부터 개장합니다(월–토 10–21시). 뉘른베르크는 11/27 개장이라 연수 기간에는 열리지 않습니다."
+          }
+        ],
+        "sources": [
+          "https://overseas.mofa.go.kr/de-ko/brd/m_7220/view.do?seq=1319314&page=2",
+          "https://www.berlin.de/en/tourism/travel-information/1758234-2862820-tipping.en.html",
+          "https://www.ihk-nuernberg.de/ihk-themen/handel-dienstleistungen/ladenschluss-was-gilt-in-bayern-im-einzelhandel",
+          "https://www.feiertagsseiten.de/feiertag/buss-und-bettag-2026-sachsen/",
+          "https://www.sanifair.com/faq/",
+          "https://www.weser-kurier.de/bremen/sanifair-erhoeht-die-toilettengebuehr-am-bremer-hauptbahnhof-doc7yntydzdt0l3sot0cpk",
+          "https://dpg-pfandsystem.de/en/the-one-way-deposit-system/useful-information/press-releases/how-do-i-distinguish-between-single-use-or-reusable-beverage-packaging.html",
+          "https://www.bundesbank.de/de/presse/pressenotizen/zahlungsverhalten-in-deutschland-2023-934828",
+          "https://www.umweltbundesamt.de/themen/deutsches-trinkwasser-erhaelt-wieder-die-note-sehr",
+          "https://www.christkindlmarkt-muenchen.de/en/home",
+          "https://www.christkindlesmarkt.de/"
+        ]
+      },
+      {
+        "id": "entry",
+        "short": "입국",
+        "title": "독일(쉥겐) 입국",
+        "items": [
+          {
+            "title": "무비자 90일",
+            "open": true,
+            "body": "대한민국 여권 소지자는 쉥겐지역에서 180일 중 90일까지 무비자로 체류할 수 있습니다."
+          },
+          {
+            "title": "여권 유효기간",
+            "body": "쉥겐 출국 예정일 기준 3개월 이상 남아 있어야 하고, 발급된 지 10년 이내여야 합니다."
+          },
+          {
+            "title": "EES(출입국시스템) — 적용",
+            "open": true,
+            "body": [
+              "2026년 4월 10일부터 전면 시행되어 이번 연수에 적용됩니다.",
+              "뮌헨 첫 입국 시 얼굴사진·지문을 등록하고, 여권 도장 대신 전자기록이 남습니다.",
+              "첫 등록으로 입국심사 대기가 길어질 수 있습니다."
+            ]
+          },
+          {
+            "title": "ETIAS(여행허가) — 미적용",
+            "body": {
+              "value": "2026년 11월 현재 시행 전이라 사전 신청이 필요 없습니다. 출발 전 공식 사이트에서 재확인하세요.",
+              "tbd": true,
+              "note": "ETIAS 시행일 최종 공지"
+            }
+          }
+        ],
+        "sources": [
+          "https://seoul.diplo.de/kr-ko/service/visa-einreise/1891120-1891120",
+          "https://europa.eu/youreurope/citizens/travel/entry-exit/non-eu-nationals/index_en.htm",
+          "https://home-affairs.ec.europa.eu/news/entryexit-system-ees-fully-operational-2026-04-10_en",
+          "https://travel-europe.europa.eu/etias_en"
+        ]
+      },
+      {
+        "id": "airport",
+        "short": "뮌헨공항",
+        "title": "뮌헨공항(MUC) 환승·출국 — Terminal 2",
+        "items": [
+          {
+            "title": "도착 후 환승 (1일차)",
+            "open": true,
+            "body": [
+              "인천발 LH719는 T2 위성동(J·K·L 게이트)에 도착합니다.",
+              "'Schengen' 방향 표지를 따라 이동 → **입국심사(EES 등록)** → 브레멘행 LH2118 게이트.",
+              "본관(G·H)과 위성동은 지하 셔틀트레인으로 연결(4분 간격, 약 1분).",
+              "환승 여유 약 3시간 10분."
+            ]
+          },
+          {
+            "title": "귀국 출국 (6일차)",
+            "body": [
+              "T2에서 체크인 → 출국심사 → 보안검색 → 게이트.",
+              "공항 이동시간을 넉넉히 확보하세요."
+            ]
+          },
+          {
+            "title": "부가세 환급(Tax Free)",
+            "body": [
+              "위탁수하물에 넣을 물품: 체크인 카운터에서 수하물 태그만 붙인 뒤, 짐을 들고 **세관 확인** → 수하물 위탁.",
+              "세관 확인 없이는 환급 불가 — 물품·여권·항공권·영수증 지참.",
+              "Global Blue 창구: T2 G·H 게이트 Level 04(보안검색 전)·Level 05(검색 후), 07:00–21:00."
+            ]
+          },
+          {
+            "title": "액체류",
+            "body": "뮌헨공항은 CT 스캐너로 용기당 2L까지 허용되지만, 다른 공항 규정이 다를 수 있으니 100ml 기준으로 준비하는 것이 안전합니다."
+          }
+        ],
+        "sources": [
+          "https://www.munich-airport.com/connecting-flights-260553",
+          "https://www.munich-airport.com/global-blue-532384",
+          "https://www.munich-airport.com/clearing-customs-when-leaving-germany-261091",
+          "https://www.munich-airport.com/security-screening-and-passport-control-3949908"
+        ]
+      },
+      {
+        "id": "customs",
+        "short": "귀국·세관",
+        "title": "귀국 세관·기내반입 규정",
+        "items": [
+          {
+            "title": "면세한도",
+            "open": true,
+            "body": [
+              "1인 미화 **800달러** (가족 합산 불가)",
+              "별도 면세: 주류 2병(합계 2L·400달러 이하), 담배 200개비, 향수 100ml",
+              "자진신고 시 관세 30% 감면(최대 20만원), 미신고 적발 시 가산세 40%"
+            ]
+          },
+          {
+            "title": "축산물 반입금지",
+            "open": true,
+            "body": [
+              "**소시지·햄·육포 등 육가공품, 치즈·버터 등 유가공품은 반입 금지**",
+              "미신고 적발 시 수백만 원 이상의 과태료가 부과됩니다."
+            ]
+          },
+          {
+            "title": "보조배터리",
+            "open": true,
+            "body": [
+              "위탁수하물 금지 — 기내 휴대만 가능",
+              "1인 2개, 160Wh 이하 (100Wh 초과는 항공사 승인 필요)",
+              "**기내에서 보조배터리 사용·충전 금지**, 머리 위 선반 보관 금지"
+            ]
+          },
+          {
+            "title": "기내 액체류 (인천 출발)",
+            "body": "용기당 100ml 이하, 1L 투명 지퍼백 1개에 담아 보안검색 시 제출합니다."
+          }
+        ],
+        "sources": [
+          "https://customs.go.kr/kcs/cm/cntnts/cntntsView.do?mi=2837&cntntsId=829",
+          "https://www.imaeil.com/page/view/2026091821381639215",
+          "https://www.airport.kr/ap_ko/916/subview.do",
+          "https://www.airport.kr/ap_ko/907/subview.do",
+          "https://www.korea.kr/news/policyNewsView.do?newsId=148962298",
+          "https://business.lufthansagroup.com/eg/en/program/experts/news/power-banks-on-board--updated-regulations-from-january-2026"
+        ]
+      }
+    ],
+    "checklist": [
+      {
+        "group": "필수 서류",
+        "items": [
+          {
+            "id": "passport",
+            "text": "여권 (귀국일 기준 유효기간 3개월 이상)"
+          },
+          {
+            "id": "passcopy",
+            "text": "여권 사본 · 여권사진 2매 (분실 대비)"
+          },
+          {
+            "id": "eticket",
+            "text": "항공권(e-티켓)"
+          },
+          {
+            "id": "insurance",
+            "text": "여행자보험 증서"
+          },
+          {
+            "id": "card",
+            "text": "해외결제 가능 신용카드 · 유로 현금(소액권)"
+          }
+        ]
+      },
+      {
+        "group": "의류",
+        "items": [
+          {
+            "id": "coat",
+            "text": "방수 보온 외투 (패딩·코트)"
+          },
+          {
+            "id": "layers",
+            "text": "발열내의 · 니트 등 겹쳐 입을 옷"
+          },
+          {
+            "id": "suit",
+            "text": "기관 방문용 비즈니스 복장"
+          },
+          {
+            "id": "winteracc",
+            "text": "목도리 · 장갑 · 모자"
+          },
+          {
+            "id": "shoes",
+            "text": "편한 방수 신발"
+          },
+          {
+            "id": "umbrella",
+            "text": "접이식 우산"
+          }
+        ]
+      },
+      {
+        "group": "전자기기",
+        "items": [
+          {
+            "id": "phone",
+            "text": "휴대폰 · 충전기 (100–240V 겸용 확인)"
+          },
+          {
+            "id": "powerbank",
+            "text": "보조배터리 (기내 휴대, 160Wh 이하)"
+          },
+          {
+            "id": "roaming",
+            "text": "로밍 또는 현지 유심/eSIM"
+          },
+          {
+            "id": "guide",
+            "text": "이 가이드북 홈 화면에 추가 + 오프라인 확인"
+          }
+        ]
+      },
+      {
+        "group": "생활용품",
+        "items": [
+          {
+            "id": "medicine",
+            "text": "상비약 · 개인 복용약"
+          },
+          {
+            "id": "toiletry",
+            "text": "세면도구 (칫솔·치약은 호텔에 없을 수 있음)"
+          },
+          {
+            "id": "coins",
+            "text": "화장실용 동전 (0.5~2유로)"
+          },
+          {
+            "id": "bag",
+            "text": "장바구니 겸 보조가방"
+          }
+        ]
+      }
+    ],
+    "phrases": [
+      {
+        "ko": "안녕하세요",
+        "de": "Guten Tag",
+        "pron": "구텐 탁"
+      },
+      {
+        "ko": "안녕히 계세요",
+        "de": "Auf Wiedersehen",
+        "pron": "아우프 비더제엔"
+      },
+      {
+        "ko": "감사합니다",
+        "de": "Danke schön",
+        "pron": "당케 쇤"
+      },
+      {
+        "ko": "실례합니다 / 죄송합니다",
+        "de": "Entschuldigung",
+        "pron": "엔트슐디궁"
+      },
+      {
+        "ko": "네 / 아니요",
+        "de": "Ja / Nein",
+        "pron": "야 / 나인"
+      },
+      {
+        "ko": "부탁합니다",
+        "de": "Bitte",
+        "pron": "비테"
+      },
+      {
+        "ko": "계산서 주세요",
+        "de": "Die Rechnung, bitte",
+        "pron": "디 레히눙, 비테"
+      },
+      {
+        "ko": "화장실이 어디예요?",
+        "de": "Wo ist die Toilette?",
+        "pron": "보 이스트 디 토일레테?"
+      },
+      {
+        "ko": "얼마예요?",
+        "de": "Was kostet das?",
+        "pron": "바스 코스테트 다스?"
+      },
+      {
+        "ko": "영어 하세요?",
+        "de": "Sprechen Sie Englisch?",
+        "pron": "슈프레헨 지 엥글리시?"
+      },
+      {
+        "ko": "도와주세요!",
+        "de": "Hilfe!",
+        "pron": "힐페!"
+      },
+      {
+        "ko": "의사가 필요해요",
+        "de": "Ich brauche einen Arzt",
+        "pron": "이히 브라우헤 아이넨 아르츠트"
+      }
+    ]
+  },
+  "sos": {
+    "numbers": [
+      {
+        "label": "구급 · 소방",
+        "tel": "112",
+        "desc": "생명이 위급할 때 · 24시간 무료"
+      },
+      {
+        "label": "경찰",
+        "tel": "110",
+        "desc": "범죄·도난 신고"
+      },
+      {
+        "label": "당직의사",
+        "tel": "116117",
+        "desc": "응급은 아니지만 진료가 필요할 때 · 24시간 무료"
+      },
+      {
+        "label": "영사콜센터 (서울, 24시간)",
+        "tel": "+82232100404",
+        "telDisplay": "+82-2-3210-0404",
+        "desc": "해외 사건·사고 상담"
+      }
+    ],
+    "staff": [
+      {
+        "role": "인솔자",
+        "name": {
+          "value": null,
+          "tbd": true,
+          "note": "인솔자 성명"
+        },
+        "tel": {
+          "value": null,
+          "tbd": true,
+          "note": "인솔자 연락처(+82 국제번호 형식)"
+        }
+      },
+      {
+        "role": "현지 가이드",
+        "name": "이영진",
+        "tel": {
+          "value": null,
+          "tbd": true,
+          "note": "현지 가이드 연락처(+49 형식)"
+        }
+      }
+    ],
+    "missions": [
+      {
+        "name": "주함부르크 총영사관",
+        "jurisdiction": "**브레멘**(1~3일차) · 함부르크 · 니더작센 · 슐레스비히홀슈타인",
+        "address": "Kaiser-Wilhelm-Str. 9, 20355 Hamburg",
+        "tel": "+4940650677600",
+        "telDisplay": "+49 40 650 677 600",
+        "emergencyTel": "+491703401498",
+        "emergencyDisplay": "+49 170 340 1498",
+        "highlight": "1~3일차(브레멘) 관할 공관",
+        "mapQuery": "Generalkonsulat der Republik Korea, Kaiser-Wilhelm-Str. 9, 20355 Hamburg"
+      },
+      {
+        "name": "주프랑크푸르트 총영사관",
+        "jurisdiction": "**헤센(카셀·기센) · 바이에른(뷔르츠부르크·뉘른베르크·뮌헨)** · 바덴뷔르템베르크",
+        "address": "Lyoner Str. 34, 60528 Frankfurt am Main",
+        "tel": "+49699567520",
+        "telDisplay": "+49 69 956 7520",
+        "emergencyTel": "+491733634854",
+        "emergencyDisplay": "+49 173 363 4854",
+        "highlight": "3~6일차(카셀~뮌헨) 관할 공관",
+        "mapQuery": "Generalkonsulat der Republik Korea, Lyoner Str. 34, 60528 Frankfurt am Main"
+      },
+      {
+        "name": "주독일 대한민국 대사관 (베를린)",
+        "jurisdiction": "베를린 · 브란덴부르크 · 작센 · 작센안할트 · 튀링겐 · 메클렌부르크포어포메른",
+        "address": "Stülerstr. 10, 10787 Berlin",
+        "tel": "+4930260650",
+        "telDisplay": "+49 30 260 650",
+        "emergencyTel": "+491734076943",
+        "emergencyDisplay": "+49 173 407 6943",
+        "hours": "월–금 09:00–12:30, 14:00–17:00",
+        "mapQuery": "Botschaft der Republik Korea, Stülerstr. 10, 10787 Berlin"
+      },
+      {
+        "name": "주독일 대사관 본 분관",
+        "jurisdiction": "노르트라인베스트팔렌 · 라인란트팔츠 · 자를란트",
+        "address": "Godesberger Allee 142-148, 53175 Bonn",
+        "tel": "+49228943790",
+        "telDisplay": "+49 228 943 790",
+        "emergencyTel": "+491703379105",
+        "emergencyDisplay": "+49 170 337 9105",
+        "mapQuery": "Botschaft der Republik Korea Außenstelle Bonn, Godesberger Allee 142-148, 53175 Bonn"
+      }
+    ],
+    "tips": [
+      {
+        "title": "긴급전화 이용 안내",
+        "body": "공관 긴급전화는 근무시간 외 사건·사고(범죄피해, 사고 등) 전용입니다. 단순 여권 분실은 업무시간에 대표번호로 연락하세요."
+      },
+      {
+        "title": "여권 분실 시",
+        "body": [
+          "1. 가까운 경찰서에서 분실·도난 신고서(Police Report) 발급",
+          "2. 관할 공관 방문 — 여권발급신청서, 여권사진, 신분증, 긴급여권신청사유서(도난 시 경찰신고서) 제출",
+          "3. 단수여권 발급 (수수료 53 USD 상당, 유로로 납부)",
+          "4. 즉시 인솔자에게 알려 주세요."
+        ]
+      },
+      {
+        "title": "안전 수칙",
+        "body": [
+          "중앙역·관광지·크리스마스마켓 등 혼잡한 곳에서 소매치기 주의",
+          "여권은 호텔 금고에 보관하고 사본 휴대 권장",
+          "단체 이동 시 인솔자 안내에 따르고 개별 이탈 시 반드시 알리기",
+          "야간 단독 외출 자제"
+        ]
+      }
+    ],
+    "sources": [
+      "https://www.tk.de/techniker/krankheit-und-behandlungen/erste-hilfe/welche-notrufnummer-waehlen-2068972",
+      "https://www.116117.de/de/aerztlicher-bereitschaftsdienst.php",
+      "https://overseas.mofa.go.kr/de-ko/wpge/m_7183/contents.do",
+      "https://overseas.mofa.go.kr/de-ko/wpge/m_7186/contents.do",
+      "https://overseas.mofa.go.kr/de-bonn-ko/wpge/m_20364/contents.do",
+      "https://overseas.mofa.go.kr/de-bonn-ko/brd/m_7677/view.do?seq=1207978"
+    ]
+  }
+}
