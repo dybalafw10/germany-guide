@@ -110,6 +110,158 @@
   }
   function byId(arr, id) { for (var i = 0; i < (arr || []).length; i++) if (arr[i].id === id) return arr[i]; return null; }
 
+  /* ---------- 인트로 애니메이션 ----------
+   * 끊기지 않는 선 하나(경로 1개)가 비행기 → 로켓 → 버스 → 대학 → 기차 → 자동차를 차례로 그리고,
+   * 사물 윤곽이 닫히는 순간 안쪽 색이 채워짐. 마지막에 선이 연수명·기간의 밑줄이 됨.
+   * 인라인 SVG + CSS 애니메이션. JS는 경로 길이로 타이밍만 계산. 첫 실행 때만 자동 재생.
+   * 점검용: ?intro=1 (강제 재생), ?intro=hold (끝나도 닫지 않음)
+   */
+  var INTRO_KEY = "de-guide-intro-v1";
+  var INTRO_D = 3.8; // 선 그리기 시간(초) — 끝맺음 포함 전체 약 4.7초
+  // 사물: 진입점(at)에서 시작해 같은 점으로 돌아오는 닫힌 한 붓 그리기 (상대좌표)
+  var INTRO_OBJS = [
+    { key: "plane", at: [40, 150], d: "l34 0 l-10 22 l12 0 l22 -22 l30 0 c10 0 16 -6 16 -11 c0 -5 -6 -9 -16 -9 l-66 0 l-12 -16 l-8 0 l-2 36",
+      box: [0, -36, 104, 22], lbl: [52, -50],
+      extras: '<circle cx="34" cy="-11" r="2.6"/><circle cx="44" cy="-11" r="2.6"/><circle cx="54" cy="-11" r="2.6"/><circle cx="64" cy="-11" r="2.6"/><circle cx="74" cy="-11" r="2.6"/>' },
+    { key: "rocket", at: [285, 290], d: "l-8 -16 l-6 0 l-12 14 l12 -32 l0 -30 l8 0 a6 6 0 1 1 12 0 a6 6 0 1 1 -12 0 l-8 0 l0 -12 c0 -14 8 -26 14 -32 c6 6 14 18 14 32 l0 42 l12 32 l-12 -14 l-6 0 l-8 16",
+      box: [-26, -108, 26, 0], lbl: [0, -120],
+      extras: '<circle cx="0" cy="-64" r="5"/>' },
+    { key: "bus", at: [156, 400], d: "l-16 0 a10 10 0 0 1 -20 0 l-46 0 a10 10 0 0 1 -20 0 l-14 0 l0 -40 q0 -8 8 -8 l96 0 q12 0 12 12 l0 36",
+      box: [-116, -48, 0, 10], lbl: [-58, -62],
+      extras: '<rect x="-108" y="-40" width="22" height="14" rx="2"/><rect x="-82" y="-40" width="22" height="14" rx="2"/><rect x="-56" y="-40" width="22" height="14" rx="2"/><rect x="-28" y="-40" width="18" height="20" rx="2"/>' },
+    { key: "univ", at: [210, 470], d: "l12 0 l0 -34 l8 0 l0 34 l14 0 l0 -34 l8 0 l0 34 l16 0 l0 -34 l8 0 l0 34 l14 0 l0 -34 l8 0 l0 34 l12 0 l0 -40 l-50 -26 l-50 26 l0 40",
+      box: [0, -66, 100, 0], lbl: [50, 24],
+      extras: '<circle cx="50" cy="-50" r="4"/>' },
+    { key: "train", at: [162, 570], d: "l-8 0 a7 7 0 0 1 -14 0 l-40 0 a7 7 0 0 1 -14 0 l-14 0 a7 7 0 0 1 -14 0 l-18 0 l0 -32 q0 -8 8 -8 l100 0 l22 18 c6 12 2 22 -8 22",
+      box: [-122, -40, 8, 7], lbl: [-57, -54],
+      extras: '<rect x="-112" y="-32" width="82" height="10" rx="2"/><path d="M-22 -32 l12 0 l10 8 l-22 0z"/>' },
+    { key: "car", at: [212, 600], d: "l12 0 a10 10 0 0 0 20 0 l44 0 a10 10 0 0 0 20 0 l14 0 l0 -10 l-18 -6 l-14 -14 l-40 0 l-16 14 l-18 2 q-4 0 -4 4 l0 10",
+      box: [0, -30, 110, 10], lbl: [55, -44],
+      extras: '<path d="M42 -26 l32 0 l12 9 l-56 0z"/>' }
+  ];
+  // 사물 사이 연결선 (절대좌표, 앞 사물의 진입점에서 출발)
+  var INTRO_LINKS = [
+    "M-20,150 C0,150 20,150 40,150",
+    "C14,236 196,334 285,290",
+    "C292,352 232,406 156,400",
+    "C176,400 192,470 210,470",
+    "C210,522 206,572 162,570",
+    "C180,575 192,600 212,600"
+  ];
+  var introTimer = null, introEndTimer = null;
+
+  function introPeriod(m) {
+    var a = m.start.split("-"), b = m.end.split("-");
+    return a[0] + "." + Number(a[1]) + "." + Number(a[2]) + dateLabel(m.start).replace(/^[^(]+/, "") +
+      " – " + Number(b[1]) + "." + Number(b[2]) + dateLabel(m.end).replace(/^[^(]+/, "");
+  }
+  function buildIntro(el) {
+    var m = data.meta, labels = (m.intro && m.intro.labels) || {};
+    var h = '<svg class="in-svg" viewBox="0 0 360 760" preserveAspectRatio="xMidYMid meet" role="img" aria-label="연수 여정 인트로">';
+    // 채움(사물마다 하나) — 선보다 아래에
+    INTRO_OBJS.forEach(function (o) {
+      h += '<g class="in-obj in-' + o.key + '" transform="translate(' + o.at[0] + " " + o.at[1] + ')">' +
+        '<path class="in-fill" d="M0 0 ' + o.d + 'z"/><g class="in-win">' + o.extras + "</g></g>";
+    });
+    // 도시 이름
+    INTRO_OBJS.forEach(function (o) {
+      h += '<text class="in-lbl" data-k="' + o.key + '" x="' + (o.at[0] + o.lbl[0]) + '" y="' + (o.at[1] + o.lbl[1]) + '" text-anchor="middle">' + esc(labels[o.key] || "") + "</text>";
+    });
+    // 연수명·기간
+    h += '<text class="in-title" id="in-title" x="180" y="668" text-anchor="middle">' + esc(m.title) + "</text>";
+    h += '<text class="in-period" id="in-period" x="180" y="700" text-anchor="middle">' + esc(introPeriod(m)) + "</text>";
+    h += '<path class="in-line" id="in-line" d=""/></svg>';
+    h += '<p class="in-skip">화면을 누르면 건너뜁니다</p>';
+    el.innerHTML = h;
+  }
+  // 경로 조각을 이어 붙이고, 각 조각 길이로 채움·이름 표시 시점 계산
+  function layoutIntro(el) {
+    var svg = el.querySelector("svg"), line = el.querySelector("#in-line");
+    var title = el.querySelector("#in-title"), period = el.querySelector("#in-period");
+    var w = 260;
+    try { w = Math.max(title.getComputedTextLength(), period.getComputedTextLength()); } catch (e) {}
+    var x0 = 180 - w / 2 - 6, x1 = 180 + w / 2 + 6;
+    var tail = "C212,632 40,614 24,662 C14,694 " + (x0 - 18) + ",716 " + x0 + ",716 L" + x1 + ",716";
+    var pieces = [], d = "";
+    INTRO_LINKS.forEach(function (lk, i) {
+      pieces.push({ kind: "link", d: lk, from: i === 0 ? null : INTRO_OBJS[i - 1].at });
+      pieces.push({ kind: "obj", d: INTRO_OBJS[i].d, from: INTRO_OBJS[i].at, key: INTRO_OBJS[i].key });
+    });
+    pieces.push({ kind: "tail", d: tail, from: INTRO_OBJS[INTRO_OBJS.length - 1].at });
+    var probe = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    svg.appendChild(probe);
+    var acc = 0, marks = {};
+    pieces.forEach(function (pc) {
+      var pd = pc.from ? "M" + pc.from[0] + "," + pc.from[1] + " " + pc.d : pc.d;
+      probe.setAttribute("d", pd);
+      var len = probe.getTotalLength();
+      if (pc.kind === "obj") marks[pc.key] = { start: acc, end: acc + len };
+      if (pc.kind === "tail") marks.tail = { start: acc, end: acc + len };
+      acc += len;
+      d += (d ? " " : "") + (pc.from && !d ? "M" + pc.from[0] + "," + pc.from[1] + " " : "") + pc.d;
+    });
+    svg.removeChild(probe);
+    line.setAttribute("d", d);
+    var L = line.getTotalLength();
+    var k = INTRO_D / L;
+    line.style.setProperty("--L", L.toFixed(1));
+    line.style.setProperty("--D", INTRO_D + "s");
+    INTRO_OBJS.forEach(function (o) {
+      el.querySelector(".in-" + o.key).style.setProperty("--t", (marks[o.key].end * k).toFixed(2) + "s");
+      el.querySelector('.in-lbl[data-k="' + o.key + '"]').style.setProperty("--t", Math.max(0, marks[o.key].start * k - 0.1).toFixed(2) + "s");
+    });
+    var tt = (marks.tail.start * k).toFixed(2) + "s";
+    title.style.setProperty("--t", tt);
+    period.style.setProperty("--t", tt);
+    return { L: L, marks: marks };
+  }
+  function introSeen() {
+    try { localStorage.setItem(INTRO_KEY, "1"); } catch (e) { /* 저장 불가 환경 */ }
+  }
+  function endIntro(fast) {
+    var el = document.getElementById("intro");
+    clearTimeout(introTimer); clearTimeout(introEndTimer);
+    introSeen();
+    var done = function () {
+      el.classList.remove("show", "out", "static", "play");
+      el.innerHTML = "";
+      document.documentElement.classList.remove("intro-pending");
+      document.body.classList.remove("sc-open");
+    };
+    if (fast) { done(); return; }
+    el.classList.add("out");
+    introEndTimer = setTimeout(done, 400);
+  }
+  function playIntro() {
+    var el = document.getElementById("intro");
+    if (!el || !data) return;
+    clearTimeout(introTimer); clearTimeout(introEndTimer);
+    buildIntro(el);
+    el.classList.remove("out", "static", "play");
+    el.classList.add("show");
+    document.body.classList.add("sc-open"); // 뒤 화면 스크롤 막기
+    var hold = /[?&]intro=hold/.test(location.search);
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var start = function () {
+      layoutIntro(el);
+      if (reduce) { el.classList.add("static"); if (!hold) introTimer = setTimeout(function () { endIntro(true); }, 2200); return; }
+      void el.offsetWidth; // 애니메이션 처음부터
+      el.classList.add("play");
+      if (!hold) introTimer = setTimeout(function () { endIntro(false); }, (INTRO_D + 0.5) * 1000);
+    };
+    // 글꼴(로컬)이 준비된 뒤 글자 폭을 재야 밑줄 길이가 맞음
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(start, start); else start();
+  }
+  document.getElementById("intro").addEventListener("click", function () { endIntro(true); });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && document.getElementById("intro").classList.contains("show")) endIntro(true);
+  });
+  function maybeIntro() {
+    var want = /[?&]intro=/.test(location.search);
+    try { if (!localStorage.getItem(INTRO_KEY)) want = true; } catch (e) { want = false; }
+    if (want) playIntro(); else document.documentElement.classList.remove("intro-pending");
+  }
+
   /* ---------- 이동경로 지도 (오프라인 SVG) ----------
    * 바탕 윤곽선: data/map-base.json (메르카토르 투영식 포함). 경로·정류지: guidebook.json schedule.map
    * 일차를 고르면 해당 구간을 순서대로 그리며 점이 따라 이동(동작 줄이기 설정 시 애니메이션 생략)
@@ -554,6 +706,7 @@
     } else {
       h += '<div class="dday">연수 종료</div><div>수고 많으셨습니다.</div>';
     }
+    h += '<button type="button" class="intro-replay" data-intro>▶ 인트로 다시 보기</button>';
     h += "</section>";
     h += renderClock();
 
@@ -819,9 +972,10 @@
   }
 
   view.addEventListener("click", function (e) {
-    var t = e.target.closest("[data-copy],[data-seg],[data-iseg],[data-notice-ok],[data-show],[data-mapday],[data-mapgo],#chk-reset");
+    var t = e.target.closest("[data-copy],[data-seg],[data-iseg],[data-notice-ok],[data-show],[data-mapday],[data-mapgo],[data-intro],#chk-reset");
     if (!t) return;
-    if (t.hasAttribute("data-mapday")) {
+    if (t.hasAttribute("data-intro")) playIntro();
+    else if (t.hasAttribute("data-mapday")) {
       var md = t.getAttribute("data-mapday");
       setMapDay(md === "all" ? "all" : Number(md));
     }
@@ -902,7 +1056,9 @@
     data = json;
     route();
     loadNotices();
+    maybeIntro();
   }).catch(function () {
+    document.documentElement.classList.remove("intro-pending");
     view.innerHTML = '<section class="card"><h2>자료를 불러오지 못했습니다</h2><p>인터넷에 한 번 연결한 뒤 다시 열어 주세요. 최초 1회 접속 후에는 오프라인에서도 열람할 수 있습니다.</p></section>';
   });
 })();

@@ -1,5 +1,5 @@
 /* 서비스 워커 — tools/build.py 가 tools/sw.template.js 로부터 생성함. 직접 수정하지 말 것. */
-const VERSION = "1cca87e754";
+const VERSION = "0943403c9b";
 const CACHE = "de-guide-" + VERSION;
 const DATA_URL = "data/guidebook.json";
 const NOTICE_URL = "data/notice.json";

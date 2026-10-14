@@ -17,6 +17,10 @@
 <meta name="apple-mobile-web-app-title" content="독일연수">
 <link rel="preload" href="fonts/Pretendard-Regular.subset.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="css/app.css">
+<script>
+  /* 첫 실행이면 화면이 그려지기 전에 인트로 자리를 덮어 둠 (홈이 먼저 번쩍이지 않도록) */
+  try { if (!localStorage.getItem("de-guide-intro-v1") || /[?&]intro=/.test(location.search)) document.documentElement.classList.add("intro-pending"); } catch (e) {}
+</script>
 </head>
 <body>
 <header class="topbar">
@@ -39,6 +43,8 @@
   <div class="sc-body" id="sc-body"></div>
   <p class="sc-hint">화면을 누르면 닫힙니다</p>
 </div>
+
+<div class="intro" id="intro" aria-hidden="true"></div>
 
 <nav class="tabbar" aria-label="주요 메뉴">
   <a href="#home" data-tab="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11 12 3l9 8v10h-6v-6H9v6H3z"/></svg><span>홈</span></a>
