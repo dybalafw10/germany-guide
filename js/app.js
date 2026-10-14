@@ -262,12 +262,16 @@
     if (want) playIntro(); else document.documentElement.classList.remove("intro-pending");
   }
 
-  /* ---------- 이동경로 지도 (오프라인 SVG) ----------
-   * 바탕 윤곽선: data/map-base.json (메르카토르 투영식 포함). 경로·정류지: guidebook.json schedule.map
-   * 일차를 고르면 해당 구간을 순서대로 그리며 점이 따라 이동(동작 줄이기 설정 시 애니메이션 생략)
+  /* ---------- 이동경로 지도: 버스가 달리는 지도 (오프라인 SVG) ----------
+   * 바탕: data/map-base.json (Natural Earth 국경 → 메르카토르 투영, tools/make_map_atlas.py로 생성)
+   * 경로·정류지·일차·거리: guidebook.json schedule.map (stops / legs / stays / overview)
+   * 전체 보기: 경로 전체를 한 번에. 일차 선택: 그날 구간으로 줌인 → 버스(항공은 비행기)가 구간별로 달림.
+   * 구간마다 최대 4초, 지나가며 거리(km)·도착 도시 이름 표시. 동작 줄이기: 애니메이션 없이 구간만 강조.
    */
-  var mapBase = null, mapDay = null, mapAnim = null, mapDone = null;
+  var mapBase = null, mapDay = null, mapVB = null, mapWrapEl = null, mapRun = 0, mapRAF = null, mapDone = null;
   var SVGNS = "http://www.w3.org/2000/svg";
+  var FULL_VB = [60, 110, 520, 680];
+  var BUS_PX_PER_S = 55, LEG_MIN = 1.2, LEG_MAX = 4.0, ZOOM_MS = 650;
 
   function loadMapBase() {
     if (mapBase) return Promise.resolve(mapBase);
@@ -278,11 +282,8 @@
     var P = mapBase.proj, lat = pt.lat * Math.PI / 180;
     return [P.ax * pt.lng + P.bx, P.ay * Math.log(Math.tan(Math.PI / 4 + lat / 2)) + P.by];
   }
-  function mapDays() {
-    var set = {};
-    data.schedule.map.legs.forEach(function (l) { set[l.day] = 1; });
-    return data.schedule.days.map(function (d) { return d.day; });
-  }
+  function mapDays() { return data.schedule.days.map(function (d) { return d.day; }); }
+  function reduceMotion() { return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); }
   function renderMapCard() {
     var h = '<section class="card map-card" id="schedule-map"><h2>이동 경로</h2>' +
       '<div class="segment map-seg" role="group" aria-label="일차 선택">' +
@@ -292,7 +293,7 @@
     });
     h += '</div><div class="map-wrap" id="map-wrap"><p class="loading">지도 불러오는 중…</p></div>' +
       '<div class="map-cap" id="map-cap"></div>' +
-      '<p class="map-legend"><span class="lg-road"></span>차량 이동 <span class="lg-air"></span>항공 <span class="lg-pin">1</span>숙소</p>' +
+      '<p class="map-legend"><span class="lg-road"></span>버스 이동 <span class="lg-air"></span>항공 <span class="lg-pin">1</span>숙소</p>' +
       '<p><small class="muted">' + T(data.schedule.map.note) + " " + T(data.schedule.routeNote) + "</small></p>" +
       sources(data.schedule.map.sources) + "</section>";
     return h;
@@ -312,13 +313,19 @@
     }
     return "M" + a[0].toFixed(1) + "," + a[1].toFixed(1) + " L" + b[0].toFixed(1) + "," + b[1].toFixed(1);
   }
-  var FULL_VB = [60, 110, 520, 680];
-  // 선택한 일차의 경로 범위로 확대 (화면 비율 유지, 너무 가까우면 최소 크기)
-  function viewBoxFor(legs) {
-    if (mapDay === "all" || !legs.length) return FULL_VB.slice();
+  function dayLegs(day) {
+    var L = data.schedule.map.legs;
+    return day === "all" ? L : L.filter(function (l) { return String(l.day) === String(day); });
+  }
+  function stayOf(day) { var s = data.schedule.map.stays || {}; return day === "all" ? null : s[String(day)] || null; }
+
+  // 선택한 일차 범위로 확대 (화면 비율 유지, 너무 가까우면 최소 크기). 지도 밖 지점(인천)은 제외
+  function viewBoxFor(day, legs) {
     var st = data.schedule.map.stops, xs = [], ys = [];
-    // 지도 밖 지점(인천)은 확대 범위에서 제외 — 항공선은 화면 밖으로 이어짐
-    legs.forEach(function (l) { [l.from, l.to].forEach(function (k) { if (st[k].xy) return; var q = proj(st[k]); xs.push(q[0]); ys.push(q[1]); }); });
+    if (day === "all") return FULL_VB.slice();
+    var stay = stayOf(day);
+    if (stay) { var q = proj(st[stay]); xs.push(q[0]); ys.push(q[1]); }
+    legs.forEach(function (l) { [l.from, l.to].forEach(function (k) { if (st[k].xy) return; var q2 = proj(st[k]); xs.push(q2[0]); ys.push(q2[1]); }); });
     if (!xs.length) return FULL_VB.slice();
     var x0 = Math.min.apply(null, xs), x1 = Math.max.apply(null, xs), y0 = Math.min.apply(null, ys), y1 = Math.max.apply(null, ys);
     var ratio = FULL_VB[2] / FULL_VB[3], pad = 70;
@@ -328,132 +335,251 @@
     var cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
     return [cx - w / 2, cy - h / 2, w, h];
   }
+
+  // 이름표 자리 고르기: 오른쪽 → 왼쪽 → 위 → 아래 → 대각선 중 지도 안·안 겹치는 첫 자리
+  function placeLabel(q, text, fs, k, vb, placed, prefLeft) {
+    var tw = 0;
+    for (var i = 0; i < text.length; i++) tw += (text.charCodeAt(i) < 128 ? 0.6 : 1.0) * fs;
+    var hgt = fs * 1.2;
+    var c = [
+      { x: q[0] + 18 * k, y: q[1] + 7 * k, a: "start", r: [q[0] + 18 * k, q[1] - 14 * k, tw, hgt] },
+      { x: q[0] - 18 * k, y: q[1] + 7 * k, a: "end", r: [q[0] - 18 * k - tw, q[1] - 14 * k, tw, hgt] },
+      { x: q[0], y: q[1] - 20 * k, a: "middle", r: [q[0] - tw / 2, q[1] - 20 * k - fs, tw, hgt] },
+      { x: q[0], y: q[1] + 34 * k, a: "middle", r: [q[0] - tw / 2, q[1] + 34 * k - fs, tw, hgt] },
+      { x: q[0] + 12 * k, y: q[1] - 16 * k, a: "start", r: [q[0] + 12 * k, q[1] - 16 * k - fs, tw, hgt] },
+      { x: q[0] + 12 * k, y: q[1] + 30 * k, a: "start", r: [q[0] + 12 * k, q[1] + 30 * k - fs, tw, hgt] },
+      { x: q[0] - 12 * k, y: q[1] - 16 * k, a: "end", r: [q[0] - 12 * k - tw, q[1] - 16 * k - fs, tw, hgt] },
+      { x: q[0] - 12 * k, y: q[1] + 30 * k, a: "end", r: [q[0] - 12 * k - tw, q[1] + 30 * k - fs, tw, hgt] }
+    ];
+    if (prefLeft) c.splice(0, 2, c[1], c[0]);
+    for (var j = 0; j < c.length; j++) {
+      var r = c[j].r;
+      if (r[0] < vb[0] + 4 * k || r[1] < vb[1] + 4 * k || r[0] + r[2] > vb[0] + vb[2] - 4 * k || r[1] + r[3] > vb[1] + vb[3] - 4 * k) continue;
+      if (placed.some(function (o) { return r[0] < o[0] + o[2] && o[0] < r[0] + r[2] && r[1] < o[1] + o[3] && o[1] < r[1] + r[3]; })) continue;
+      placed.push(r);
+      return c[j];
+    }
+    return null;
+  }
+  // 거리(km) 이름표: 구간 가운데, 선 양옆 중 빈 쪽
+  function placeKm(p0, p1, text, fs, k, vb, placed) {
+    var dx = p1[0] - p0[0], dy = p1[1] - p0[1];
+    var n = Math.hypot(dx, dy) || 1, nx = -dy / n, ny = dx / n, tw = 0;
+    for (var i = 0; i < text.length; i++) tw += (text.charCodeAt(i) < 128 ? 0.6 : 1.0) * fs;
+    var hgt = fs * 1.2, cands = [];
+    [0.5, 0.35, 0.65].forEach(function (f) { [22, -22, 36, -36, 50, -50].forEach(function (o) { cands.push([f, o]); }); });
+    for (var j = 0; j < cands.length; j++) {
+      var mx = p0[0] + dx * cands[j][0], my = p0[1] + dy * cands[j][0];
+      var cx = mx + nx * cands[j][1] * k, cy = my + ny * cands[j][1] * k;
+      var r = [cx - tw / 2 - 4 * k, cy - hgt / 2 - 2 * k, tw + 8 * k, hgt + 4 * k];
+      if (r[0] < vb[0] + 2 * k || r[1] < vb[1] + 2 * k || r[0] + r[2] > vb[0] + vb[2] - 2 * k || r[1] + r[3] > vb[1] + vb[3] - 2 * k) continue;
+      if (placed.some(function (o) { return r[0] < o[0] + o[2] && o[0] < r[0] + r[2] && r[1] < o[1] + o[3] && o[1] < r[1] + r[3]; })) continue;
+      placed.push(r);
+      return { x: cx, y: cy + fs * 0.35, r: r };
+    }
+    return null;
+  }
+  // 버스·비행기 아이콘 (원점 = 경로 위 지점)
+  function vehicle(parent, mode, k) {
+    var g = el("g", { class: "m-veh " + (mode === "air" ? "m-plane" : "m-bus") }, parent);
+    var inner = el("g", {}, g);
+    if (mode === "air") {
+      el("path", { d: "M-15 0 l8 -2 l6 -9 l4 0 l-3 8 l9 -1 l4 -5 l3 0 l-2 7 l2 7 l-3 0 l-4 -5 l-9 -1 l3 8 l-4 0 l-6 -9 z", class: "m-veh-body" }, inner);
+    } else {
+      el("rect", { x: -16, y: -19, width: 32, height: 14, rx: 3.5, class: "m-veh-body" }, inner);
+      el("rect", { x: -12, y: -16, width: 6, height: 5, rx: 1, class: "m-veh-win" }, inner);
+      el("rect", { x: -4, y: -16, width: 6, height: 5, rx: 1, class: "m-veh-win" }, inner);
+      el("rect", { x: 4, y: -16, width: 9, height: 7, rx: 1, class: "m-veh-win" }, inner);
+      el("circle", { cx: -9, cy: -4.5, r: 3.2, class: "m-veh-wheel" }, inner);
+      el("circle", { cx: 9, cy: -4.5, r: 3.2, class: "m-veh-wheel" }, inner);
+    }
+    g._k = k;
+    g._inner = inner;
+    return g;
+  }
+  function moveVehicle(g, pt, dirX) {
+    g.setAttribute("transform", "translate(" + pt.x.toFixed(2) + " " + pt.y.toFixed(2) + ") scale(" + g._k.toFixed(3) + ")");
+    g._inner.setAttribute("transform", dirX < 0 ? "scale(-1 1)" : "");
+  }
+
   function drawMap() {
     var wrap = document.getElementById("map-wrap");
     if (!wrap || !mapBase) return;
-    if (mapAnim) { cancelAnimationFrame(mapAnim); mapAnim = null; }
+    var run = ++mapRun;
+    if (mapRAF) { cancelAnimationFrame(mapRAF); mapRAF = null; }
     if (mapDone) { clearTimeout(mapDone); mapDone = null; }
-    var M = data.schedule.map, st = M.stops;
-    var legs = mapDay === "all" ? M.legs : M.legs.filter(function (l) { return String(l.day) === String(mapDay); });
-    var vb = viewBoxFor(legs), k = vb[2] / FULL_VB[2]; // k: 확대 배율에 따른 글자·선 크기 보정
-    var svg = el("svg", { viewBox: vb.map(function (v) { return v.toFixed(1); }).join(" "), role: "img", "aria-label": "독일 이동경로 지도", class: "route-map" });
+    if (wrap !== mapWrapEl) { mapWrapEl = wrap; mapVB = null; } // 탭을 새로 열면 줌 시작점 초기화
+    var M = data.schedule.map, st = M.stops, day = mapDay;
+    var legs = dayLegs(day), stay = stayOf(day);
+    var vb = viewBoxFor(day, legs), k = vb[2] / FULL_VB[2];
+    var animate = day !== "all" && !reduceMotion();
+    var startVB = animate && mapVB ? mapVB : vb;
+    var svg = el("svg", { viewBox: startVB.map(function (v) { return v.toFixed(1); }).join(" "), role: "img", "aria-label": "독일 이동경로 지도", class: "route-map" });
+    var defs = el("defs", {}, svg);
     var g0 = el("g", { class: "m-base" }, svg);
-    mapBase.nb.forEach(function (d) { el("path", { d: d, class: "m-nb" }, g0); });
+    mapBase.nb.forEach(function (dd) { el("path", { d: dd, class: "m-nb" }, g0); });
     el("path", { d: mapBase.de, class: "m-de" }, g0);
+    var refRects = [];
     (M.refs || []).forEach(function (r) {
-      var q = proj(r);
+      var q = proj(r), rfs = 17 * k, tw = 0;
+      for (var ci = 0; ci < r.name.length; ci++) tw += (r.name.charCodeAt(ci) < 128 ? 0.6 : 1.0) * rfs;
+      if (q[0] - 4 * k < vb[0] || q[0] + 12 * k + tw > vb[0] + vb[2] || q[1] - rfs < vb[1] || q[1] + rfs * 0.5 > vb[1] + vb[3]) return; // 확대 화면 밖이면 생략
       el("circle", { cx: q[0], cy: q[1], r: 3 * k, class: "m-ref" }, g0);
-      el("text", { x: q[0] + 7 * k, y: q[1] + 6 * k, class: "m-reflbl", "font-size": 17 * k }, g0).textContent = r.name;
+      el("text", { x: q[0] + 7 * k, y: q[1] + 6 * k, class: "m-reflbl", "font-size": rfs, "stroke-width": 4 * k }, g0).textContent = r.name;
+      refRects.push([q[0] - 4 * k, q[1] - rfs * 0.8, tw + 12 * k, rfs * 1.2]); // 참고 도시 이름 자리도 피해서 배치
     });
-    // 전체 경로(연하게)
-    var gAll = el("g", { class: "m-all" }, svg);
+    // 전체 경로(연하게) — 일차 보기의 배경
+    var gAll = el("g", { class: "m-all" + (day === "all" ? " hidden" : "") }, svg);
     M.legs.forEach(function (l) {
       el("path", { d: legPath(l), class: "m-leg " + l.mode, "stroke-width": 3 * k, "stroke-dasharray": l.mode === "air" ? 2 * k + " " + 9 * k : "none" }, gAll);
     });
-    // 선택 일차
+    // 강조 구간
     var gSel = el("g", { class: "m-sel" }, svg);
-    var paths = legs.map(function (l) {
-      return el("path", { d: legPath(l), class: "m-leg on " + l.mode, "stroke-width": (l.mode === "air" ? 4 : 6) * k }, gSel);
+    var segs = legs.map(function (l, i) {
+      var dpath = legPath(l), w = (l.mode === "air" ? 3.5 : 6) * k, pth, reveal;
+      if (l.mode === "air") {
+        // 점선을 유지한 채 앞에서부터 드러나도록 마스크로 그림
+        var mk = el("mask", { id: "mk" + run + "-" + i, maskUnits: "userSpaceOnUse", x: -2000, y: -2000, width: 5000, height: 5000 }, defs);
+        reveal = el("path", { d: dpath, fill: "none", stroke: "#fff", "stroke-width": w * 3, "stroke-linecap": "round" }, mk);
+        pth = el("path", { d: dpath, class: "m-leg on air", "stroke-width": w, "stroke-dasharray": 2.5 * k + " " + 8 * k, mask: "url(#mk" + run + "-" + i + ")" }, gSel);
+      } else {
+        pth = el("path", { d: dpath, class: "m-leg on road", "stroke-width": w }, gSel);
+        reveal = pth;
+      }
+      return { leg: l, path: pth, reveal: reveal };
     });
-    // 숙소 핀
+    // 탈것 층(핀 아래) → 숙소 핀
+    var gVeh = el("g", { class: "m-vehs" }, svg);
     var gPin = el("g", {}, svg);
     Object.keys(st).forEach(function (key) {
       var s0 = st[key]; if (!s0.pin) return;
       var q = proj(s0);
-      el("circle", { cx: q[0], cy: q[1], r: 13 * k, class: "m-pin", "stroke-width": 3 * k }, gPin);
+      if (key === stay) el("circle", { cx: q[0], cy: q[1], r: 13 * k, class: "m-pulse", "stroke-width": 4 * k }, gPin);
+      el("circle", { cx: q[0], cy: q[1], r: 13 * k, class: "m-pin" + (key === stay ? " on" : ""), "stroke-width": 3 * k }, gPin);
       el("text", { x: q[0], y: q[1] + 5 * k, class: "m-pinnum", "text-anchor": "middle", "font-size": 16 * k }, gPin).textContent = s0.pin;
     });
-    // 선택 일차 정류지 이름 (가까워서 겹치는 이름은 생략)
+    // 이름표: 도시(도착 순서), 거리(km)
+    var gLbl = el("g", { class: "m-lbls" }, svg), placed = refRects.slice(), fs = 21 * k;
     var order = [];
-    legs.forEach(function (l) { [l.from, l.to].forEach(function (key) { if (order.indexOf(key) < 0) order.push(key); }); });
-    if (mapDay === "all") order = order.filter(function (key) { return st[key].pin || key === "giessen" || key === "wuerzburg"; });
-    var gLbl = el("g", { class: "m-lbls" }, svg), placed = [];
+    if (day === "all") order = (M.overview || []).slice();
+    else {
+      if (stay) order.push(stay);
+      legs.forEach(function (l) { [l.from, l.to].forEach(function (key) { if (order.indexOf(key) < 0) order.push(key); }); });
+    }
+    // 핀·정류점 자리를 먼저 막아 두어 이름표가 점을 덮지 않게
+    order.forEach(function (key) { if (st[key].xy) return; var q = proj(st[key]); placed.push([q[0] - 9 * k, q[1] - 9 * k, 18 * k, 18 * k]); });
+    var kmEls = [];
+    if (day !== "all") segs.forEach(function (sg, i) {
+      var l = sg.leg; if (!l.label || l.mode === "air") return;
+      var pk = placeKm(proj(st[l.from]), proj(st[l.to]), l.label, 17 * k, k, vb, placed);
+      if (!pk) return;
+      var g = el("g", { class: "m-km" }, gLbl);
+      el("rect", { x: pk.r[0], y: pk.r[1], width: pk.r[2], height: pk.r[3], rx: 6 * k, class: "m-km-bg" }, g);
+      el("text", { x: pk.x, y: pk.y, "text-anchor": "middle", "font-size": 17 * k, class: "m-km-t" }, g).textContent = l.label;
+      kmEls[i] = g;
+    });
+    var labelEls = {};
     order.forEach(function (key) {
       var s0 = st[key]; if (s0.xy) return;
-      var q = proj(s0);
+      var q = proj(s0), name = day === "all" && s0.short ? s0.short : s0.name;
       if (!s0.pin) el("circle", { cx: q[0], cy: q[1], r: 5 * k, class: "m-stop", "stroke-width": 3 * k }, gLbl);
-      // 이름표 자리: 오른쪽 → 왼쪽 → 위 → 아래 중 지도 안에 들어가고 다른 이름과 안 겹치는 첫 자리
-      var fs = 21 * k, tw = 0;
-      for (var ci = 0; ci < s0.name.length; ci++) tw += (s0.name.charCodeAt(ci) < 128 ? 0.6 : 1.0) * fs;
-      var prefLeft = q[0] > vb[0] + vb[2] * 0.62;
-      var cands = [
-        { x: q[0] + 18 * k, y: q[1] + 7 * k, anchor: "start", r: [q[0] + 18 * k, q[1] - 14 * k, tw, fs * 1.2] },
-        { x: q[0] - 18 * k, y: q[1] + 7 * k, anchor: "end", r: [q[0] - 18 * k - tw, q[1] - 14 * k, tw, fs * 1.2] },
-        { x: q[0], y: q[1] - 20 * k, anchor: "middle", r: [q[0] - tw / 2, q[1] - 20 * k - fs, tw, fs * 1.2] },
-        { x: q[0], y: q[1] + 34 * k, anchor: "middle", r: [q[0] - tw / 2, q[1] + 34 * k - fs, tw, fs * 1.2] },
-        { x: q[0] + 12 * k, y: q[1] - 16 * k, anchor: "start", r: [q[0] + 12 * k, q[1] - 16 * k - fs, tw, fs * 1.2] },
-        { x: q[0] + 12 * k, y: q[1] + 30 * k, anchor: "start", r: [q[0] + 12 * k, q[1] + 30 * k - fs, tw, fs * 1.2] },
-        { x: q[0] - 12 * k, y: q[1] - 16 * k, anchor: "end", r: [q[0] - 12 * k - tw, q[1] - 16 * k - fs, tw, fs * 1.2] },
-        { x: q[0] - 12 * k, y: q[1] + 30 * k, anchor: "end", r: [q[0] - 12 * k - tw, q[1] + 30 * k - fs, tw, fs * 1.2] }
-      ];
-      if (prefLeft) cands.splice(0, 2, cands[1], cands[0]);
-      var fits = function (r) {
-        if (r[0] < vb[0] + 4 * k || r[1] < vb[1] + 4 * k || r[0] + r[2] > vb[0] + vb[2] - 4 * k || r[1] + r[3] > vb[1] + vb[3] - 4 * k) return false;
-        return !placed.some(function (o) { return r[0] < o[0] + o[2] && o[0] < r[0] + r[2] && r[1] < o[1] + o[3] && o[1] < r[1] + r[3]; });
-      };
-      var pick = null;
-      for (var cj = 0; cj < cands.length && !pick; cj++) if (fits(cands[cj].r)) pick = cands[cj];
-      if (!pick) return;
-      placed.push(pick.r);
-      el("text", { x: pick.x, y: pick.y, class: "m-lbl", "text-anchor": pick.anchor,
-        "font-size": fs, "stroke-width": 5 * k }, gLbl).textContent = s0.name;
+      var pk = placeLabel(q, name, fs, k, vb, placed, q[0] > vb[0] + vb[2] * 0.62);
+      if (!pk) return;
+      var t = el("text", { x: pk.x, y: pk.y, class: "m-lbl", "text-anchor": pk.a, "font-size": fs, "stroke-width": 5 * k }, gLbl);
+      t.textContent = name;
+      labelEls[key] = t;
     });
-    var dot = el("circle", { r: 7 * k, class: "m-dot", "stroke-width": 3 * k }, svg);
+    // 탈것
+    var veh = segs.length ? vehicle(gVeh, segs[0].leg.mode, k) : null;
+    if (animate) {  // 화면에 붙이기 전에 숨겨 두어야 처음에 잠깐 보였다 사라지지 않음
+      Object.keys(labelEls).forEach(function (key) { labelEls[key].style.opacity = 0; });
+      kmEls.forEach(function (g) { if (g) g.style.opacity = 0; });
+      if (stay && labelEls[stay]) labelEls[stay].style.opacity = 1;
+      if (segs.length && labelEls[segs[0].leg.from]) labelEls[segs[0].leg.from].style.opacity = 1;
+      if (veh) veh.style.opacity = 0;
+    }
     wrap.innerHTML = "";
     wrap.appendChild(svg);
+    if (!animate && veh) veh.style.display = "none";
 
     // 설명
     var cap = document.getElementById("map-cap");
-    if (mapDay === "all") {
-      cap.innerHTML = "<b>전체 일정</b> · 브레멘 → 카셀 → 뉘른베르크 → 뮌헨";
+    if (day === "all") {
+      cap.innerHTML = "<b>전체 일정</b> · " + esc((M.overview || []).map(function (k2) { return st[k2].short || st[k2].name; }).join(" → "));
     } else {
-      var d = data.schedule.days.filter(function (x) { return String(x.day) === String(mapDay); })[0];
-      var stopNames = order.filter(function (key) { return !st[key].xy; }).map(function (key) { return st[key].name; });
-      cap.innerHTML = "<b>" + d.day + "일차 " + dateLabel(d.date) + "</b> · " + esc(raw(d.title)) +
-        (d.route ? "<br><small>" + T(d.route) + "</small>" : stopNames.length ? "<br><small>" + esc(stopNames.join(" → ")) + "</small>" : "") +
-        (legs.length ? "" : "<br><small>지도 이동 없음</small>");
+      var dd2 = data.schedule.days.filter(function (x) { return String(x.day) === String(day); })[0];
+      var kms = legs.filter(function (l) { return l.label && l.mode !== "air"; }).map(function (l) { return (st[l.from].short || st[l.from].name) + "→" + (st[l.to].short || st[l.to].name) + " " + l.label; });
+      cap.innerHTML = "<b>" + dd2.day + "일차 " + dateLabel(dd2.date) + "</b> · " + esc(raw(dd2.title)) +
+        (dd2.route ? "<br><small>" + T(dd2.route) + "</small>" : kms.length ? "<br><small>" + esc(kms.join(" · ")) + "</small>" : "") +
+        (stay ? "<br><small>도시 간 이동 없음 — " + esc(st[stay].name) + " 일대 일정</small>" : "") +
+        (!legs.length && !stay ? "<br><small>지도 이동 없음</small>" : "");
     }
 
-    // 애니메이션: 구간을 순서대로 그리고 점이 따라감. 끝나면 항공 구간은 점선으로
-    var lens = paths.map(function (pth) { return pth.getTotalLength(); });
-    var total = lens.reduce(function (x, y) { return x + y; }, 0);
-    paths.forEach(function (pth, i) { pth.style.strokeDasharray = lens[i] + " " + lens[i]; });
-    function frame(progress) {
-      var done = progress * total, acc = 0;
-      paths.forEach(function (pth, i) {
-        var part = Math.max(0, Math.min(lens[i], done - acc));
-        pth.style.strokeDashoffset = lens[i] - part;
-        if (done >= acc && done <= acc + lens[i] + 0.01) {
-          var pt = pth.getPointAtLength(part);
-          dot.setAttribute("cx", pt.x); dot.setAttribute("cy", pt.y);
+    // 정적 표시(전체 보기·동작 줄이기): 모두 보이게
+    var lens = segs.map(function (sg) { return sg.reveal.getTotalLength(); });
+    function showAll() {
+      segs.forEach(function (sg, i) { sg.reveal.style.strokeDasharray = "none"; sg.reveal.style.strokeDashoffset = 0; });
+      Object.keys(labelEls).forEach(function (key) { labelEls[key].style.opacity = 1; });
+      kmEls.forEach(function (g) { if (g) g.style.opacity = 1; });
+      if (veh && segs.length) {
+        veh.style.opacity = 1;
+        var last = segs[segs.length - 1], pt = last.path.getPointAtLength(lens[lens.length - 1]);
+        var p0 = last.path.getPointAtLength(Math.max(0, lens[lens.length - 1] - 1));
+        moveVehicle(veh, pt, pt.x - p0.x);
+      }
+    }
+    mapVB = vb;
+    if (!animate) { svg.setAttribute("viewBox", vb.join(" ")); showAll(); return; }
+
+    // 애니메이션 준비: 구간 숨김, 이름표 숨김(출발 도시만 보임)
+    segs.forEach(function (sg, i) { sg.reveal.style.strokeDasharray = lens[i] + " " + lens[i]; sg.reveal.style.strokeDashoffset = lens[i]; });
+    var pxPerUnit = (wrap.getBoundingClientRect().width || 320) / vb[2];
+    var durs = segs.map(function (sg, i) {
+      var sec = (sg.leg.mode === "air" ? lens[i] * pxPerUnit / (BUS_PX_PER_S * 3) : lens[i] * pxPerUnit / BUS_PX_PER_S);
+      return Math.min(LEG_MAX, Math.max(LEG_MIN, sec)) * 1000;
+    });
+    var total = ZOOM_MS + durs.reduce(function (x, y) { return x + y; }, 0);
+    mapWrapEl.setAttribute("data-durs", durs.map(function (x) { return (x / 1000).toFixed(2); }).join(",")); // 점검용(구간별 재생 시간)
+    var ease = function (q) { return q < 0.5 ? 2 * q * q : 1 - Math.pow(-2 * q + 2, 2) / 2; };
+    var t0 = null;
+    function step(ts) {
+      if (run !== mapRun || !document.getElementById("map-wrap")) return;
+      if (t0 === null) t0 = ts;
+      var t = ts - t0;
+      // 1) 줌인
+      var z = Math.min(1, t / ZOOM_MS), ez = ease(z);
+      svg.setAttribute("viewBox", startVB.map(function (v, i) { return (v + (vb[i] - v) * ez).toFixed(2); }).join(" "));
+      // 2) 구간별 주행
+      var acc = ZOOM_MS;
+      for (var i = 0; i < segs.length; i++) {
+        var sg = segs[i], q = Math.max(0, Math.min(1, (t - acc) / durs[i]));
+        if (t >= acc) {
+          if (veh) veh.style.opacity = 1;
+          if (kmEls[i]) kmEls[i].style.opacity = 1;
+          if (q < 1 || i === segs.length - 1) {
+            var part = lens[i] * ease(q), pt = sg.path.getPointAtLength(part), back = sg.path.getPointAtLength(Math.max(0, part - 1));
+            if (veh.getAttribute("class").indexOf(sg.leg.mode === "air" ? "m-plane" : "m-bus") < 0) {
+              veh.remove(); veh = vehicle(gVeh, sg.leg.mode, k);
+            }
+            moveVehicle(veh, pt, pt.x - back.x || (sg.path.getPointAtLength(Math.min(lens[i], part + 1)).x - pt.x));
+          }
         }
-        acc += lens[i];
-      });
+        sg.reveal.style.strokeDashoffset = lens[i] * (1 - ease(q));
+        if (q >= 1 && labelEls[sg.leg.to]) labelEls[sg.leg.to].style.opacity = 1;
+        acc += durs[i];
+      }
+      if (t < total) mapRAF = requestAnimationFrame(step);
+      else { mapRAF = null; finish(); }
     }
     function finish() {
-      frame(1);
-      paths.forEach(function (pth, i) {
-        if (legs[i].mode === "air") { pth.style.strokeDasharray = 2 * k + " " + 9 * k; pth.style.strokeDashoffset = 0; }
-      });
+      if (run !== mapRun) return;
+      if (mapDone) { clearTimeout(mapDone); mapDone = null; }
+      svg.setAttribute("viewBox", vb.join(" "));
+      showAll();
     }
-    if (!paths.length) { dot.style.display = "none"; return; }
-    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) { finish(); return; }
-    var dur = Math.min(4500, 900 + (total / k) * 4), t0 = null;
-    function step(ts) {
-      if (!document.getElementById("map-wrap")) { mapAnim = null; return; }
-      if (t0 === null) t0 = ts;
-      var q = Math.min(1, (ts - t0) / dur);
-      frame(q < 0.5 ? 2 * q * q : 1 - Math.pow(-2 * q + 2, 2) / 2); // 부드럽게 가속·감속
-      if (q < 1) mapAnim = requestAnimationFrame(step); else { mapAnim = null; if (mapDone) { clearTimeout(mapDone); mapDone = null; } finish(); }
-    }
-    frame(0);
-    mapAnim = requestAnimationFrame(step);
+    mapRAF = requestAnimationFrame(step);
     // 화면이 가려져 애니메이션이 멈춰도 끝 상태는 보장
-    mapDone = setTimeout(function () {
-      if (mapAnim) { cancelAnimationFrame(mapAnim); mapAnim = null; }
-      finish();
-    }, dur + 300);
+    mapDone = setTimeout(function () { if (mapRAF) { cancelAnimationFrame(mapRAF); mapRAF = null; } finish(); }, total + 400);
   }
   function setMapDay(v) {
     mapDay = v;
@@ -765,10 +891,7 @@
   function renderSchedule() {
     var o = data.schedule, h = "";
     h += '<div class="notice">' + T(data.meta.disclaimer) + "</div>";
-    if (mapDay === null) {  // 연수 중이면 오늘 일차, 아니면 전체
-      var td = o.days.filter(function (d) { return d.date === todayISO(); })[0];
-      mapDay = td ? td.day : "all";
-    }
+    if (mapDay === null) mapDay = "all";  // 처음엔 독일 전체 경로를 한 번에
     if (o.map) h += renderMapCard();
     o.days.forEach(function (d) { h += dayCard(d); });
     return h;

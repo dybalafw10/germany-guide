@@ -365,3 +365,21 @@ html.intro-pending .intro, .intro.show { display: flex; }
   .intro.out { transition: none; }
 }
 .intro-replay { margin-top: 10px; background: rgba(255,255,255,.12); color: inherit; border: 1px solid rgba(255,255,255,.3); border-radius: 999px; padding: 6px 14px; font: inherit; font-size: .85rem; cursor: pointer; min-height: 36px; }
+
+/* 버스가 달리는 지도 */
+:root { --map-veh: #e0543c; --map-veh-win: #ffffff; --map-veh-wheel: #1b2b4b; }
+@media (prefers-color-scheme: dark) { :root { --map-veh: #ff7a5c; --map-veh-win: #1c2636; --map-veh-wheel: #e8edf4; } }
+.m-all.hidden { display: none; }
+.m-veh-body { fill: var(--map-veh); stroke: #fff; stroke-width: 1.2; }
+.m-plane .m-veh-body { fill: var(--map-veh); }
+.m-veh-win { fill: var(--map-veh-win); }
+.m-veh-wheel { fill: var(--map-veh-wheel); stroke: #fff; stroke-width: 1; }
+.m-lbl, .m-km { transition: opacity .35s ease; }
+.m-km-bg { fill: var(--surface); stroke: var(--map-route); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+.m-km-t { font-family: inherit; font-weight: 700; fill: var(--map-route); }
+.m-pin.on { fill: var(--map-route); }
+.m-pulse { fill: none; stroke: var(--map-route); opacity: .5; transform-box: fill-box; transform-origin: center; animation: m-pulse 1.6s ease-out infinite; }
+@keyframes m-pulse { from { transform: scale(1); opacity: .6; } to { transform: scale(2.2); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .m-pulse { animation: none; opacity: .5; transform: scale(1.5); } .m-lbl, .m-km { transition: none; } }
+
+.m-reflbl { paint-order: stroke; stroke: var(--map-de); stroke-linejoin: round; }

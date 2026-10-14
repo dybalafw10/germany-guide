@@ -335,7 +335,7 @@
       }
     ],
     "map": {
-      "note": "도시 사이를 직선으로 단순화한 개략도입니다 (실제 도로와 다름).",
+      "note": "도시 사이를 직선으로 단순화한 개략도입니다 (실제 도로와 다름). 지도: Natural Earth.",
       "refs": [
         {
           "name": "함부르크",
@@ -377,10 +377,11 @@
           "lng": 8.7867
         },
         "achim": {
-          "name": "아힘(숙소)",
+          "name": "브레멘(아힘 숙소)",
           "lat": 53.0338169,
           "lng": 8.9603125,
-          "pin": 1
+          "pin": 1,
+          "short": "브레멘"
         },
         "unib": {
           "name": "브레멘 기관 방문",
@@ -396,29 +397,34 @@
           "name": "카셀(숙소)",
           "lat": 51.3079038,
           "lng": 9.5487413,
-          "pin": 2
+          "pin": 2,
+          "short": "카셀"
         },
         "giessen": {
           "name": "기센",
           "lat": 50.58056,
-          "lng": 8.67694
+          "lng": 8.67694,
+          "short": "기센"
         },
         "wuerzburg": {
           "name": "뷔르츠부르크",
           "lat": 49.7913,
-          "lng": 9.9534
+          "lng": 9.9534,
+          "short": "뷔르츠부르크"
         },
         "nuernberg": {
           "name": "뉘른베르크(숙소)",
           "lat": 49.4288494,
           "lng": 11.0195028,
-          "pin": 3
+          "pin": 3,
+          "short": "뉘른베르크"
         },
         "muenchen": {
           "name": "뮌헨(숙소)",
           "lat": 48.1023059,
           "lng": 11.5297462,
-          "pin": 4
+          "pin": 4,
+          "short": "뮌헨"
         },
         "bmw": {
           "name": "BMW Welt",
@@ -444,18 +450,6 @@
         {
           "day": 1,
           "from": "bre",
-          "to": "achim",
-          "mode": "road"
-        },
-        {
-          "day": 2,
-          "from": "achim",
-          "to": "unib",
-          "mode": "road"
-        },
-        {
-          "day": 2,
-          "from": "unib",
           "to": "achim",
           "mode": "road"
         },
@@ -523,7 +517,19 @@
       "sources": [
         "https://en.wikipedia.org/wiki/Munich_Airport",
         "https://en.wikipedia.org/wiki/Bremen_Airport",
-        "https://en.wikipedia.org/wiki/W%C3%BCrzburg"
+        "https://en.wikipedia.org/wiki/W%C3%BCrzburg",
+        "https://www.naturalearthdata.com/downloads/50m-cultural-vectors/50m-admin-0-countries-2/"
+      ],
+      "stays": {
+        "2": "achim"
+      },
+      "overview": [
+        "achim",
+        "kassel",
+        "giessen",
+        "wuerzburg",
+        "nuernberg",
+        "muenchen"
       ]
     }
   },
