@@ -644,15 +644,19 @@
     if (hh > 0) return hh + "시간 " + String(mm).padStart(2, "0") + "분 " + String(ss).padStart(2, "0") + "초";
     return mm + "분 " + String(ss).padStart(2, "0") + "초";
   }
+  // 홈 표지판에 함께 적는 독일어 지명
+  var DE_NAME = { "인천": "Incheon", "뮌헨": "München", "브레멘": "Bremen", "카셀": "Kassel",
+    "기센": "Gießen", "뷔르츠부르크": "Würzburg", "뉘른베르크": "Nürnberg" };
+
+  // 다음 일정(위) + 두 나라 시계(아래)를 한 판에
   function renderClock() {
     var clocks = data.meta.clocks || [];
-    var h = '<section class="card clock-card"><div class="clocks">';
+    var h = '<section class="card board"><div class="next-ev" id="next-ev"></div><div class="clocks">';
     clocks.forEach(function (c, i) {
       h += '<div class="clock"><div class="clock-label">' + esc(c.label) + ' <small>' + esc(c.sub || "") + "</small></div>" +
         '<div class="clock-time" id="clk-t' + i + '">--:--</div><div class="clock-date" id="clk-d' + i + '"></div></div>';
     });
-    h += '</div><p class="clock-diff" id="clk-diff"></p>';
-    h += '<div class="next-ev" id="next-ev"></div></section>';
+    h += '</div><p class="clock-diff" id="clk-diff"></p></section>';
     return h;
   }
   function tickClock() {
@@ -677,9 +681,9 @@
       ne.innerHTML = evs.length ? '<div class="ne-label">모든 일정이 끝났습니다</div>' : "";
     } else {
       var tzName = next.tz === "Asia/Seoul" ? "한국시각" : "현지시각";
-      ne.innerHTML = '<div class="ne-label">다음 일정 · ' + next.day + "일차 " + dateLabel(next.date) + " " + next.time + " (" + tzName + ")" +
-        (next.tbd ? ' <span class="chk">확인필요</span>' : "") + "</div>" +
-        '<div class="ne-title">' + esc(next.title) + "</div>" +
+      ne.innerHTML = '<div class="ne-label">다음 일정</div>' +
+        '<div class="ne-title">' + esc(next.title) + (next.tbd ? ' <span class="chk">확인필요</span>' : "") + "</div>" +
+        '<div class="ne-when">' + next.day + "일차 · " + dateLabel(next.date) + " " + next.time + " " + tzName + "</div>" +
         '<div class="ne-count">' + durationText(next.at - now) + " 남음</div>";
     }
     return true;
@@ -783,28 +787,34 @@
   }
   function hhmm(d) { return String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0"); }
 
+  // 홈 맨 위: 아직 확인하지 않은 공지만
   function renderNotices() {
-    var list = activeNotices();
-    if (!list.length) return "";
     var seen = readSeen(), h = "";
-    list.filter(function (n) { return seen.indexOf(n.id) < 0; }).forEach(function (n) {
+    activeNotices().filter(function (n) { return seen.indexOf(n.id) < 0; }).forEach(function (n) {
       h += '<section class="notice-banner' + (n.level === "urgent" ? " urgent" : "") + '" role="alert">' +
         '<div class="nb-head"><span class="nb-tag">' + (n.level === "urgent" ? "긴급 공지" : "새 공지") + "</span>" +
         '<small>' + esc(n.date || "") + "</small></div>" +
         "<h3>" + esc(n.title) + "</h3>" + paras(n.body) +
-        '<button type="button" class="btn nb-ok" data-notice-ok="' + esc(n.id) + '">확인</button></section>';
+        '<button type="button" class="btn nb-ok" data-notice-ok="' + esc(n.id) + '">확인했어요</button></section>';
     });
+    return h;
+  }
+  // 홈 아래쪽: 지난 공지 전체
+  function renderNoticeList() {
+    var list = activeNotices();
+    if (!list.length) return "";
     var src = notice.source === "network" ? "최신 공지 · " + hhmm(notice.checkedAt) + " 확인"
       : "오프라인 — 저장된 공지 표시 중";
-    h += '<details class="card notice-all"><summary>공지사항 ' + list.length + "건</summary>" +
+    return '<details class="card notice-all"><summary>공지사항 ' + list.length + "건</summary>" +
       list.map(function (n) {
         return '<div class="notice-item"><div><b>' + esc(n.title) + "</b> <small>" + esc(n.date || "") + "</small></div>" + paras(n.body) + "</div>";
       }).join("") + '<p><small class="muted">' + src + "</small></p></details>";
-    return h;
   }
   function refreshNoticeArea() {
     var el = document.getElementById("notice-area");
     if (el) el.innerHTML = renderNotices();
+    var el2 = document.getElementById("notice-list");
+    if (el2) el2.innerHTML = renderNoticeList();
   }
   function loadNotices() {
     return fetch(NOTICE_URL, { cache: "no-store" }).then(function (r) {
@@ -823,16 +833,37 @@
     data.schedule.days.forEach(function (d) { if (d.date === today) day = d; });
 
     h += '<div id="notice-area">' + renderNotices() + "</div>";
-    h += '<section class="card hero"><div class="eyebrow">' + esc(m.org || "") + "</div><h1>" + esc(m.title) + "</h1>";
-    h += '<p class="muted">' + esc(m.subtitle || "") + "</p>";
+
+    // 표지판 히어로: 파란 도로표지 위에 노란 도시 표지(Ortstafel) — 지금 있는(또는 첫) 도시
+    var cities = function (d) { return String(d.city || "").split("→").map(function (s) { return s.trim(); }).filter(Boolean); };
+    var signCity, signNote, status, statusSub;
     if (day) {
-      h += '<div class="dday">' + day.day + "일차</div><div>" + dateLabel(day.date) + " · " + esc(day.city || "") + "</div>";
+      var cs = cities(day);
+      signCity = cs[cs.length - 1];
+      signNote = cs.length > 1 ? cs.slice(0, -1).join(" → ") + "에서 이동" : "";
+      status = day.day + "일차";
+      statusSub = dateLabel(day.date);
     } else if (today < m.start) {
-      h += '<div class="dday">D-' + dayDiff(today, m.start) + "</div><div>출발 " + dateLabel(m.start) + "</div>";
+      var first = data.schedule.days[0] ? cities(data.schedule.days[0]) : [];
+      signCity = first[first.length - 1] || "";
+      signNote = "첫 숙박 도시";
+      status = "D-" + dayDiff(today, m.start);
+      statusSub = dateLabel(m.start) + " 출발";
     } else {
-      h += '<div class="dday">연수 종료</div><div>수고 많으셨습니다.</div>';
+      signCity = "인천";
+      signNote = "";
+      status = "연수 종료";
+      statusSub = "수고 많으셨습니다";
     }
-    h += '<button type="button" class="intro-replay" data-intro>▶ 인트로 다시 보기</button>';
+    h += '<section class="sign-hero"><h1>' + esc(m.title) + "</h1>" +
+      '<p class="sh-route">' + esc(m.subtitle || "") + "</p>";
+    if (signCity) {
+      h += '<div class="ortstafel"><span class="ot-ko">' + esc(signCity) + "</span>" +
+        (DE_NAME[signCity] ? '<span class="ot-de" lang="de">' + esc(DE_NAME[signCity]) + "</span>" : "") + "</div>";
+    }
+    h += '<div class="sh-status"><b>' + esc(status) + "</b><span>" + esc(statusSub) +
+      (signNote ? "<br>" + esc(signNote) : "") + "</span></div>";
+    h += '<div class="sh-foot"><span>' + esc(m.org || "") + '</span><button type="button" class="intro-replay" data-intro>인트로 다시 보기</button></div>';
     h += "</section>";
     h += renderClock();
 
@@ -863,6 +894,7 @@
       h += '<h2 class="section-title">출국 시 집결</h2><section class="card">' +
         kv([["장소", T(o.meeting.place)], ["시간", T(o.meeting.time)]]) + paras(o.meeting.notes) + "</section>";
     }
+    h += '<div id="notice-list">' + renderNoticeList() + "</div>";
     h += '<p class="footer-note">자료 기준일 ' + esc(m.updated) + " · 오프라인에서도 열람 가능</p>";
     return h;
   }
